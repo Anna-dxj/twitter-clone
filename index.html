@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Twitter Clone</title>
+        <!-- Maybe insert Bootstrap -->
+        <!-- Insert Google Fonts -->
+        <link rel="stylesheet" href="style.css">
+        <script src="index.js" defer type="module"></script>
+    </head>
+    <body>
+        <section id="login-signup-div" class="hidden">
+            <div id="login-form">
+                <h1>Login</h1>
+                <div>
+                    <p id="empty-login-warning">All fields must be filled in!</p>
+                    <p id="incorrect-credentials-warning">Username or password incorrect!</p>
+                    <p id="too-many-attempts-warning">Too many login attempts. Please try again later.</p>
+                </div>
+                <form>
+                    <div>
+                        <label for="login-email"></label>
+                        <input type="email" placeholder="Email" id="login-email" name="login-email" required>
+                    </div>
+                    <div>
+                        <label for="login-password"></label>
+                        <input type="password" placeholder="Password" id="login-password" name="login-password" required>
+                    </div>
+                    <button id="login-btn">Login</button>
+                </form>
+                <div class="switch-form-div">
+                    <p>Don't have an account yet?</p>
+                    <button id="switch-to-signup">Sign up</button>
+                </div>
+            </div>
+            <div id="signup-form">
+                <h1>Signup</h1>
+                <div>
+                    <p id="empty-signup-warning">All fields must be filled in!</p>
+                    <p id="passwords-mismatch-warning">Passwords do not match.</p>
+                    <p id="password-length-warning">Password must be at least 6 characters long.</p>
+                </div>
+                <form>
+                    <div>
+                        <label for="signup-email"></label>
+                        <input type="email" placeholder="Email" id="signup-email" name="signup-email" required>
+                    </div>
+                    <div>
+                        <label for="signup-password"></label>
+                        <input type="password" placeholder="Password" id="signup-password" name="signup-password" required>
+                    </div>
+                    <div>
+                        <label for="confirm-password"></label>
+                        <input type="password" placeholder="Confirm Password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    <div>
+                        <label for="create-username"></label>
+                        <input type="text" placeholder="@username" id="create-username" name="create-username" required>
+                    </div>
+                    <button id="signup-btn">Signup</button>
+                </form>
+                <div class="switch-form-div">
+                    <p>Already have an account?</p>
+                    <button id="switch-to-login">Login!</button>
+                </div>
+            </div>
+        </section>
+        <section id="auth-div">
+            <nav>
+                <ul>
+                    <li>Home</li>
+                    <form>
+                        <label for="search-user"></label>
+                        <input id="search-user" type="text" placeholder="Search for a user" name="search-user">
+                    </form>
+                    <li>Create Post</li>
+                    <li>Profile</li>
+                </ul>
+            </nav>
+            <section id="feed-div" class="hidden">
+                <section class="post" data-user-id="post-id">
+                    <div class="poster-detail-div">
+                        <img />
+                        <h3>@user</h3>
+                    </div>
+                    <div>
+                        <p>POST BODY</p>
+                    </div>
+                    <div>
+                        <div>
+                            <button class="likes">
+                                <img alt="Likes"/>
+                                <p>##</p>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="comments">
+                                <img alt="Comments"/>
+                                <p>##</p>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            <section id="post-details-div" class="hidden">
+                <section class="post">
+                    <div class="poster-detail-div">
+                        <img />
+                        <h3>@user</h3>
+                    </div>
+                    <div>
+                        <p>POST BODY</p>
+                    </div>
+                    <div>
+                        <div>
+                            <button class="likes">
+                                <img alt="Likes"/>
+                                <p>##</p>
+                            </button>
+                        </div>
+                        <div>
+                            <div class="comments">
+                                <img alt="Comments"/>
+                                <p>##</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="comment-section">
+                    <section class="comment" data-comment-id="comment-id">
+                        <div>
+                            <img />
+                            <h4>@commenter</h4>
+                        </div>
+                        <p>comment</p>
+                    </section>
+                </section>
+            </section>
+            <section id="my-profile-div" class="hidden">
+                <section id="my-profile-details">
+                    <div id="set-profile">
+                        <div>
+                            <img />
+                            <div>
+                                <h2>@user</h2>
+                                <button id="edit-profile">Edit Profile</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <p>Followers</p>
+                                <p>##</p>
+                            </div>
+                            <div>
+                                <p>Following</p>
+                                <p>##</p>
+                            </div>
+                            <div>
+                                <p>Posts</p>
+                                <p>##</p>
+                            </div>
+                        </div>
+                        <p>BIO</p>
+                    </div>
+                    <form id="edit-profile">
+                        <div>
+                            <label for="update-photo"></label>
+                            <input type="file" accept="image/*" id="update-photo" name="update-photo">
+                        </div>
+                        <div>
+                            <label for="update-username"></label>
+                            <input type="text" id="update-username"  name="update-username" value="whatever the old one was">
+                        </div>
+                        <div>
+                            <label for="update-bio"></label>
+                            <input type="textarea" id="update-bio" name="update-bio" value="whatever the old one is" >
+                        </div>
+                        <button id="update-profile">Save</button>
+                    </form>
+                </section>
+                <section id="my-posts">
+                    <section class="post" data-post-id="post-id">
+                        <div class="poster-detail-div">
+                            <img />
+                            <h3>@user</h3>
+                        </div>
+                        <div>
+                            <p>POST BODY</p>
+                        </div>
+                        <div>
+                            <div>
+                                <button class="likes">
+                                    <img alt="Likes"/>
+                                    <p>##</p>
+                                </button>
+                            </div>
+                            <div>
+                                <button class="comments">
+                                    <img alt="Comments"/>
+                                    <p>##</p>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+            <section id="search-result-div" class="hidden">
+                <h2>Search Results for: <span id="search-words">ITEM</span></h2>
+                <section class="profile-result">
+                    <img />
+                    <h3 class="redirect-to-details" data-user-id="uid">@ user</h3>
+                </section>
+            </section>
+            <section id="profile-details-div" class="hidden">
+                <section id="my-profile-details">
+                    <div id="set-profile">
+                        <div>
+                            <img />
+                            <div>
+                                <h2>@user</h2>
+                                <button id="edit-profile">Follow</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <p>Followers</p>
+                                <p>##</p>
+                            </div>
+                            <div>
+                                <p>Following</p>
+                                <p>##</p>
+                            </div>
+                            <div>
+                                <p>Posts</p>
+                                <p>##</p>
+                            </div>
+                        </div>
+                        <p>BIO</p>
+                    </div>
+                </section>
+                <section id="my-posts">
+                    <section class="post" data-post-id="post-id">
+                        <div class="poster-detail-div">
+                            <img />
+                            <h3>@user</h3>
+                        </div>
+                        <div>
+                            <p>POST BODY</p>
+                        </div>
+                        <div>
+                            <div>
+                                <button class="likes">
+                                    <img alt="Likes"/>
+                                    <p>##</p>
+                                </button>
+                            </div>
+                            <div>
+                                <button class="comments">
+                                    <img alt="Comments"/>
+                                    <p>##</p>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+            <section id="new-post-div">
+                <div>
+                    <img />
+                    <h3>@posting user</h3>
+                </div>
+                <form>
+                    <div>
+                        <label for="new-post"></label>
+                        <input type="textarea" id="new-post" name="new-post" />
+                    </div>
+                    <div>
+                        <button>Post</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </body>
+</html>
