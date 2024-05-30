@@ -1,5 +1,6 @@
 import { showEl, hideEl, removeAt } from "./script/utils/hideShowDivs.js";
 import { convertBack, convertToInput, convertToTextarea, displayProfileDetails } from "./script/domManipulation/profiles.js";
+import { getUser } from "./script/firebase/auth.js";
 
 // login form pages
 const loginForm = document.querySelector('#login-form');
@@ -40,40 +41,70 @@ const profileDetailsDiv = document.querySelector('#profile-details-div')
 const editProfileBtn = document.querySelector('#edit-profile');
 const saveProfileBtn = document.querySelector('#save-profile')
 
-function handleLogin(event) {
+async function handleLogin(event) {
     const emailInput = document.querySelector('#login-email');
     const passwordInput = document.querySelector('#login-password')
     const emptyFormWarning = document.querySelector('#empty-login-warning');
+    const incorrectCredentialsWarning = document.querySelector('#incorrect-credentials-warning')
+    const tooManyAttemptsWarning = document.querySelector('#too-many-attempts-warning')
     const emailValue = emailInput.value.trim()
     const passwordValue = passwordInput.value.trim()
-
-    event.preventDefault()
-
-    if (!emailValue || !passwordValue) {
-        showEl(emptyFormWarning)
-        if (!emailValue){
-            emailInput.classList.add('custom-text-warning-input')
+    
+    try {
+        event.preventDefault()
+    
+        if (!emailValue || !passwordValue) {
+            showEl(emptyFormWarning)
+            if (!emailValue){
+                emailInput.classList.add('custom-text-warning-input')
+            }
+            if (!passwordValue) {
+                passwordInput.classList.add('custom-text-warning-input')
+            }
+            return; 
+        } else {
+            hideEl(emptyFormWarning)
+            emailInput.classList.remove('custom-text-warning-input')
+            passwordInput.classList.remove('custom-text-warning-input')
         }
-        if (!passwordValue) {
+    
+        // Login
+        const {user, userData} = await getUser(emailValue, passwordValue)
+
+        if (userData) {
+            console.log('work')
+            // clear form
+            emailInput.value = ''
+            passwordInput.value = ''
+            
+            // Hide warnings
+            hideEl(incorrectCredentialsWarning);
+            hideEl(tooManyAttemptsWarning); 
+
+            // Remove custom-text-warning-input 
+            emailInput.classList.remove('custom-text-warning-input')
+            passwordInput.classList.remove('custom-text-warning-input')
+
+            // show proper divs
+            hideEl(authForms);
+            showEl(myProfileDiv);
+            showEl(authSections);
+        }
+    } catch (error) {
+        // Clear input values 
+        emailInput.value = ''
+        passwordInput.value = ''
+        console.log(error)
+
+        // handle errors 
+        if (error.code === 'auth/too-many-requests') {
+            showEl(tooManyRequestsWarning);
+        } else {
+            showEl(incorrectCredentialsWarning);
+            emailInput.classList.add('custom-text-warning-input')
             passwordInput.classList.add('custom-text-warning-input')
         }
-        return; 
-    } else {
-        hideEl(emptyFormWarning)
-        emailInput.classList.remove('custom-text-warning-input')
-        passwordInput.classList.remove('custom-text-warning-input')
     }
-
-    // Login
-
-    console.log('work')
-    // clear form
-    emailInput.value = ''
-    passwordInput.value = ''
-    // show proper divs
-    hideEl(authForms);
-    showEl(myProfileDiv);
-    showEl(authSections);
 }
 
 function handleSignup(event) {
@@ -144,11 +175,27 @@ function handleSignup(event) {
 }
 
 function handleViewLogin() {
+    const emailInput = document.querySelector('#signup-email');
+    const passwordInput = document.querySelector('#signup-password');
+    const confirmInput = document.querySelector('#confirm-password');
+    const usernameInput = document.querySelector('#create-username');
+
+    emailInput.classList.remove('custom-text-warning-input')
+    passwordInput.classList.remove('custom-text-warning-input')
+    confirmInput.classList.remove('custom-text-warning-input')
+    usernameInput.classList.remove('custom-text-warning-input')
+
     hideEl(signupForm)
     showEl(loginForm)
 }
 
 function handleViewSignup() {
+    const emailInput = document.querySelector('#login-email');
+    const passwordInput = document.querySelector('#login-password');
+    
+    emailInput.classList.remove('custom-text-warning-input');
+    passwordInput.classList.remove('custom-text-warning-input')
+
     hideEl(loginForm)
     showEl(signupForm)
 }
