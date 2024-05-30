@@ -1,0 +1,307 @@
+import { showEl, hideEl, removeAt } from "./script/utils/hideShowDivs.js";
+import { convertBack, convertToInput, convertToTextarea, displayProfileDetails } from "./script/domManipulation/profiles.js";
+
+// login form pages
+const loginForm = document.querySelector('#login-form');
+const signupForm = document.querySelector('#signup-form'); 
+
+// login form buttons
+const loginBtn = document.querySelector('#login-btn');
+const viewSignupBtn = document.querySelector('#switch-to-signup');
+const signupBtn = document.querySelector('#signup-btn');
+const viewLoginBtn = document.querySelector('#switch-to-login');
+
+// Main sections
+const authForms = document.querySelector('#login-signup-div');
+const authSections = document.querySelector('#auth-div')
+
+// Main pages
+const feedDiv = document.querySelector('#feed-div');
+const searchDiv = document.querySelector('#search-div');
+const myProfileDiv = document.querySelector('#my-profile-div');
+const newPostDiv = document.querySelector('#new-post-div');
+const postDetailsDiv = document.querySelector('#post-details-div');
+
+// Nav btns
+const homeBtn = document.querySelector('#home-btn');
+const createBtn = document.querySelector('#create-btn');
+const searchBtn = document.querySelector('#search-btn');
+const profileBtn = document.querySelector('#profile-btn');
+
+// newPostDiv buttons
+const createPostBtn = document.querySelector('#create-post');
+
+// searchDiv buttons
+const searchUserBtn = document.querySelector('#search-user-btn');
+// const searchReturnDiv = document.querySelector('#search-return');
+const profileDetailsDiv = document.querySelector('#profile-details-div')
+
+// profileDiv buttons
+const editProfileBtn = document.querySelector('#edit-profile');
+const saveProfileBtn = document.querySelector('#save-profile')
+
+function handleLogin(event) {
+    const emailInput = document.querySelector('#login-email');
+    const passwordInput = document.querySelector('#login-password')
+    const emptyFormWarning = document.querySelector('#empty-login-warning');
+    const emailValue = emailInput.value.trim()
+    const passwordValue = passwordInput.value.trim()
+
+    event.preventDefault()
+
+    if (!emailValue || !passwordValue) {
+        showEl(emptyFormWarning)
+        if (!emailValue){
+            emailInput.classList.add('custom-text-warning-input')
+        }
+        if (!passwordValue) {
+            passwordInput.classList.add('custom-text-warning-input')
+        }
+        return; 
+    } else {
+        hideEl(emptyFormWarning)
+        emailInput.classList.remove('custom-text-warning-input')
+        passwordInput.classList.remove('custom-text-warning-input')
+    }
+
+    // Login
+
+    console.log('work')
+    // clear form
+    emailInput.value = ''
+    passwordInput.value = ''
+    // show proper divs
+    hideEl(authForms);
+    showEl(myProfileDiv);
+    showEl(authSections);
+}
+
+function handleSignup(event) {
+    const emailInput = document.querySelector('#signup-email')
+    const passwordInput = document.querySelector('#signup-password')
+    const confirmPasswordInput = document.querySelector('#confirm-password')
+    const usernameInput = document.querySelector('#create-username')
+    const emptyFormWarning = document.querySelector('#empty-signup-warning')
+    const mismatchPasswordWarning = document.querySelector('#passwords-mismatch-warning')
+    const passwordLengthWarning = document.querySelector('#password-length-warning')
+
+    const emailValue = emailInput.value.trim()
+    const passwordValue = passwordInput.value.trim()
+    const confirmPasswordValue = confirmPasswordInput.value.trim()
+    const usernameValue = usernameInput.value.trim()
+    event.preventDefault()
+
+    if (!emailValue || !passwordValue || !confirmPasswordValue || !usernameValue) {
+        showEl(emptyFormWarning);
+        if (!emailValue) {
+            emailInput.classList.add('custom-text-warning-input')
+        }
+        if (!passwordValue) {
+            passwordInput.classList.add('custom-text-warning-input')
+        }
+        if (!confirmPasswordValue) {
+            confirmPasswordInput.classList.add('custom-text-warning-input')
+        }
+        if (!usernameValue) {
+            usernameInput.classList.add('custom-text-warning-input')
+        }
+        return 
+    } else {
+        hideEl(emptyFormWarning)
+        emailInput.classList.remove('custom-text-warning-input')
+        passwordInput.classList.remove('custom-text-warning-input')
+        confirmPasswordInput.classList.remove('custom-text-warning-input')
+        usernameInput.classList.remove('custom-text-warning-input')
+    }
+
+    if (passwordValue.length < 6) {
+        showEl(passwordLengthWarning)
+        passwordInput.classList.add('custom-text-warning-input')
+        passwordInput.value = ''
+        return
+    } else {
+        hideEl(passwordLengthWarning)
+        passwordInput.classList.remove('custom-text-warning-input')
+    }
+
+    if (passwordValue !== confirmPasswordValue) {
+        showEl(mismatchPasswordWarning)
+        confirmPasswordInput.classList.add('custom-text-warning-input')
+        passwordInput.classList.add('custom-text-warning-input')
+
+        confirmPasswordInput.value = ''
+        passwordInput.value = ''
+        return
+    } else {
+        confirmPasswordInput.classList.remove('custom-text-warning-input')
+        passwordInput.classList.remove('custom-text-warning-input')
+        hideEl(mismatchPasswordWarning)
+    }
+
+    hideEl(authForms);
+    showEl(feedDiv);
+    showEl(authSections);
+}
+
+function handleViewLogin() {
+    hideEl(signupForm)
+    showEl(loginForm)
+}
+
+function handleViewSignup() {
+    hideEl(loginForm)
+    showEl(signupForm)
+}
+
+function handleShowHomeDiv() {
+    console.log('home')
+    hideEl(searchDiv);
+    hideEl(myProfileDiv);
+    hideEl(newPostDiv);
+    hideEl(postDetailsDiv);
+
+    // read all posts & display 
+    // impliment infinite scrolling? 
+
+
+    showEl(feedDiv); 
+}
+
+function handleShowCreateDiv() {
+    console.log('new')
+    hideEl(feedDiv)
+    hideEl(searchDiv)
+    hideEl(myProfileDiv)
+    hideEl(postDetailsDiv)
+    showEl(newPostDiv)
+}
+
+function handleCreateNewPost(event) {
+    const newPostInput = document.querySelector('#new-post')
+    event.preventDefault()
+    console.log('Post created:', newPostInput.value)
+
+    const newPostBody = newPostInput.value.trim()
+    console.log(newPostBody)
+
+    if (!newPostBody) {
+        return;
+    }
+    
+    // TODO: get user uid
+    // TODO: write new post
+
+    newPostBody.value = '' 
+    handleShowHomeDiv()
+}
+
+function handleShowSearchDiv() {
+    console.log('search')
+    hideEl(feedDiv)
+    hideEl(newPostDiv)
+    hideEl(myProfileDiv)
+    hideEl(postDetailsDiv)
+    showEl(searchDiv)
+}
+
+function handleSearchUser(event) {
+    const searchUserInput = document.querySelector('#search-user-input')
+    const emptySearchDiv = document.querySelector('#empty-search');
+    event.preventDefault()
+    console.log('searching user!', searchUserInput.value)
+
+    const searchUserValue = searchUserInput.value.trim()
+
+    if (!searchUserValue) {
+        return; 
+    }
+
+    // TODO: get users 
+    // TODO: display users with that
+    // if no users diaplay emptySearchDiv
+    // if users display searchResultsDiv
+
+    searchUserInput.value = ''
+}
+
+function handleOtherProfileDetails(event) {
+    const targetEl = event.target;
+    const isProfileResult = targetEl.classList.contains('profile-result');
+    
+    if (isProfileResult) {
+        console.log(targetEl);
+        // GET USERID
+        // READ USER SINGULAR 
+        // DISPLAY 
+        hideEl(searchDiv);
+        // Note need to conditionally render the save/edit button
+        // displayProfileDetails(userHandle, displayName, profileImg, bio, null, userId)
+        showEl(myProfileDiv);
+    }
+
+}
+
+function handleShowProfileDiv() {
+    console.log('profile')
+    hideEl(feedDiv)
+    hideEl(newPostDiv)
+    hideEl(searchDiv)
+    hideEl(searchDiv)
+    showEl(myProfileDiv)
+}
+
+function handleEditProfile(event) {
+    const userInfoDiv = document.querySelector('#user-info');
+    const profileDetailsDiv = document.querySelector('#profile-details');
+    const userHandle = document.querySelector('#user-handle');
+    const displayName = document.querySelector('#display-name'); 
+    const bio = document.querySelector('#bio')
+    
+    event.preventDefault()
+    hideEl(editProfileBtn)
+    showEl(saveProfileBtn)
+
+    const userHandleValue = removeAt(userHandle.textContent)
+    
+    console.log(userHandle.parentNode, userInfoDiv);
+    convertToInput(userHandleValue, 'user handle', userHandle, userInfoDiv);
+    convertToInput(displayName.textContent, 'display name', displayName, userInfoDiv);
+    convertToTextarea(bio.textContent, bio, profileDetailsDiv)
+}
+
+function handleSaveProfile(event) {
+    const userInfoDiv = document.querySelector('#user-info');
+    const profileDetailsDiv = document.querySelector('#profile-details');
+    const userHandleInput = document.querySelector('#user-handle');
+    const displayNameInput = document.querySelector('#display-name'); 
+    const bioInput = document.querySelector('#bio')
+
+    event.preventDefault()
+    hideEl(saveProfileBtn)
+    showEl(editProfileBtn)
+
+    convertBack(userHandleInput.value.trim(), userHandleInput, 'h2', userInfoDiv, 'user handle')
+    convertBack(displayNameInput.value.trim(), displayNameInput, 'p', userInfoDiv, 'display name')
+    convertBack(bioInput.value.trim(), bioInput, 'p', profileDetailsDiv, 'bio')
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profileResults = document.querySelectorAll('.profile-result');
+
+    profileResults.forEach(profileResult => {
+        profileResult.addEventListener('click', handleOtherProfileDetails)
+    })
+})
+
+loginBtn.addEventListener('click', handleLogin);
+viewSignupBtn.addEventListener('click', handleViewSignup);
+signupBtn.addEventListener('click', handleSignup);
+viewLoginBtn.addEventListener('click', handleViewLogin)
+homeBtn.addEventListener('click', handleShowHomeDiv);
+createBtn.addEventListener('click', handleShowCreateDiv);
+createPostBtn.addEventListener('click', handleCreateNewPost)
+searchBtn.addEventListener('click', handleShowSearchDiv);
+searchUserBtn.addEventListener('click', handleSearchUser);
+profileBtn.addEventListener('click', handleShowProfileDiv); 
+editProfileBtn.addEventListener('click', handleEditProfile); 
+saveProfileBtn.addEventListener('click', handleSaveProfile)

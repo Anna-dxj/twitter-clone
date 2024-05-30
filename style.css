@@ -22,6 +22,7 @@
 body {
     min-height: 100vh;
     background-color: var(--backround-color);
+    overflow-x: hidden; 
 }
 
 h1, h2, h3, h4 {
@@ -66,8 +67,9 @@ p {
     background-color: var(--pink);
 }
 
-.pink-btn:hover {
-    background-color: var(--pink-highlight)
+.pink-btn:hover, .custom-form-btn:hover {
+    background-color: var(--pink-highlight); 
+    cursor: pointer;
 
 }
 
@@ -208,6 +210,24 @@ nav ul {
     color: var(--secondary-text); 
 }
 
+.update-user-handle {
+    font-family: 'Comfortaa', sans-serif; 
+    font-weight: 600;
+    font-size: 24px; 
+    margin-top: 0.3rem; 
+}
+
+.update-display-name{
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: 600; 
+    margin-top: 0.3rem; 
+}
+.update-bio{
+    height: 30rem; 
+    width: 90%; 
+    margin-bottom: 1rem; 
+}
+
 #search-form {
     margin: 1rem;
     padding: 1rem 0; 
@@ -229,7 +249,11 @@ nav ul {
 
 .custom-form-btn {
     background-color: var(--pink); 
-    padding: 0.6rem; 
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; 
+    margin-left: -2rem; 
+    border: none; 
+    padding: 0.45rem; 
     border-radius: 0 0.5rem 0.5rem 0;
 }
 
@@ -389,7 +413,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
 @media screen and (min-width: 992px) {
 
     #auth-div {
-        padding-left: 5rem; 
+        padding-left: 4rem; 
     }
 
     nav {
@@ -415,6 +439,8 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
 
     .post {
         box-shadow: 9px 18px 55px -12px #000000;
+        margin: 1rem;
+        padding: 0.5rem;
     }
 
     .post-body {

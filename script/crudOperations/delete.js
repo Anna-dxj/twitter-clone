@@ -1,0 +1,1 @@
+function deletePost(postId) {}

@@ -15,13 +15,13 @@
         <script src="index.js" defer type="module"></script>
     </head>
     <body>
-        <section id="login-signup-div" class=" login-signup-div hidden">
+        <section id="login-signup-div" class=" login-signup-div">
             <div id="login-form" class="login-signup-form">
                 <h1>Login</h1>
                 <div class="warning-div">
-                    <p id="empty-login-warning" class="warning-txt">All fields must be filled in!</p>
-                    <p id="incorrect-credentials-warning" class="warning-txt">Username or password incorrect!</p>
-                    <p id="too-many-attempts-warning" class="warning-txt">Too many login attempts. Please try again later.</p>
+                    <p id="empty-login-warning" class="warning-txt hidden">All fields must be filled in!</p>
+                    <p id="incorrect-credentials-warning" class="warning-txt hidden">Username or password incorrect!</p>
+                    <p id="too-many-attempts-warning" class="warning-txt hidden">Too many login attempts. Please try again later.</p>
                 </div>
                 <form class="d-flex align-items-center justify-content-center flex-column">
                     <div>
@@ -42,10 +42,10 @@
             <div id="signup-form" class="login-signup-form hidden">
                 <h1>Signup</h1>
                 <div class="warning-div">
-                    <p id="empty-signup-warning" class="warning-txt">All fields must be filled in!</p>
-                    <p id="passwords-mismatch-warning" class="warning-txt">Passwords do not match.</p>
-                    <p id="password-length-warning" class="warning-txt">Password must be at least 6 characters long.</p>
-                    <p id="username-warning" class="warning-txt">Username already exists!</p>
+                    <p id="empty-signup-warning" class="warning-txt hidden">All fields must be filled in!</p>
+                    <p id="passwords-mismatch-warning" class="warning-txt hidden">Passwords do not match.</p>
+                    <p id="password-length-warning" class="warning-txt hidden">Password must be at least 6 characters long.</p>
+                    <p id="username-warning" class="warning-txt hidden">Username already exists!</p>
                 </div>
                 <form class="d-flex align-items-center justify-content-center flex-column">
                     <div>
@@ -72,25 +72,25 @@
                 </div>
             </div>
         </section>
-        <section id="auth-div" class="">
+        <section id="auth-div" class="hidden">
             <nav>
                 <ul>
-                    <li class="nav-item custom-btn nav-btn">
+                    <li class="nav-item custom-btn nav-btn" id="home-btn">
                         <img src="./assets/home-icon.svg" class="icon-img" alt="Home"/>
                     </li>
-                    <li class="nav-item custom-btn nav-btn">
+                    <li class="nav-item custom-btn nav-btn" id="create-btn">
                         <img src="./assets/new-post-icon.svg" class="icon-img" alt="Create post"/>
                     </li>
-                    <li class="nav-item custom-btn nav-btn">
+                    <li class="nav-item custom-btn nav-btn" id="search-btn">
                         <img src="./assets/search-icon.svg" class="icon-img" alt="Search for User"/>
                     </li>
-                    <li class="nav-item custom-btn nav-btn">
+                    <li class="nav-item custom-btn nav-btn" id="profile-btn">
                         <img src="./assets/profile-icon.svg" class="icon-img" alt="My Profile"/>
                     </li>
                 </ul>
             </nav>
-            <section id="feed-div" class="">
-                <div class="row d-flex align-items-center justify-content-center flex-column">
+            <section id="feed-div" class="hidden">
+                <div id="post-container-div" class="row d-flex align-items-center justify-content-center flex-column">
                     <section class="post col-sm-12 offset-md-1 col-md-10" data-user-id="post-id">
                         <div class="poster-detail-div d-flex">
                             <img alt="image" class="profile-pic"/>
@@ -119,72 +119,100 @@
                     </section>
                 </div>
             </section>
+            <section id="new-post-div" class="new-post-div hidden">
+                <div class="post new-post-form-div">
+                    <div class="d-flex align-items-center">
+                        <img alt="asdf" class="profile-pic"/>
+                        <div>
+                            <h3 class="user-handle">@posting user</h3>
+                            <p class="display-name">Display Name</p>
+                        </div>
+                    </div>
+                    <form id="new-post-form" class="d-flex flex-column justify-content-center align-items-center">
+                        <div>
+                            <label for="new-post"></label>
+                            <textarea id="new-post" name="new-post" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div>
+                            <button class="custom-btn pink-btn" id="create-post">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
             <section id="search-div" class="hidden">
                 <form id="search-form" class="d-flex align-items-center justify-content-center">
                     <label for="search-user"></label>
-                    <input id="search-user" type="text" placeholder="Search for a user" name="search-user" class="form-control">
-                    <button id="search-btn" class="custom-form-btn" type="button">Search</button>
+                    <input id="search-user-input" type="text" placeholder="Search for a user" name="search-user" class="form-control">
+                    <button id="search-user-btn" class="custom-form-btn" type="button">Search</button>
                 </form>
                 <section id="search-results" class="row">
                     <div class="col-sm-12 col-md-10 offset-md-1">
-                        <div id="empty-search" class="empty-search">
+                        <div id="empty-search" class="empty-search hidden">
                             <p>No user exists!</p>
                         </div>
                         <div id="search-return" class="search-results row">
-                            <section class="profile-result col-sm-12 col-md-6">
-                                <img />
-                                <h3 class="user-handle">@user handler</h3>
-                                <p class="display-name">Display name</p>
+                            <section class="profile-result col-sm-12 col-md-6 d-flex">
+                                <img alt="asdf" class="profile-pic"/>
+                                <div>
+                                    <h3 class="user-handle">@user handler</h3>
+                                    <p class="display-name">Display name</p>
+                                </div>
                             </section>
-                            <section class="profile-result col-sm-12 col-md-6">
-                                <img />
-                                <h3 class="user-handle">@user handler</h3>
-                                <p class="display-name">Display name</p>
+                            <section class="profile-result col-sm-12 col-md-6 d-flex">
+                                <img alt="asdf" class="profile-pic"/>
+                                <div>
+                                    <h3 class="user-handle">@user handler</h3>
+                                    <p class="display-name">Display name</p>
+                                </div>
                             </section>
-                            <section class="profile-result col-sm-12 col-md-6">
-                                <img />
-                                <h3 class="user-handle">@user handler</h3>
-                                <p class="display-name">Display name</p>
+                            <section class="profile-result col-sm-12 col-md-6 d-flex">
+                                <img alt="asdf" class="profile-pic"/>
+                                <div>
+                                    <h3 class="user-handle">@user handler</h3>
+                                    <p class="display-name">Display name</p>
+                                </div>
                             </section>
-                            <section class="profile-result col-sm-12 col-md-6">
-                                <img />
-                                <h3 class="user-handle">@user handler</h3>
-                                <p class="display-name">Display name</p>
+                            <section class="profile-result col-sm-12 col-md-6 d-flex">
+                                <img alt="asdf" class="profile-pic"/>
+                                <div>
+                                    <h3 class="user-handle">@user handler</h3>
+                                    <p class="display-name">Display name</p>
+                                </div>
                             </section>
                         </div>
                     </div>
                 </section>
             </section>
-            <section id="post-details-div" class="hidden">
+            <!-- <section id="post-details-div" class="hidden">
                 <div id="back-btn-div">
                     <button class="btn" id="back-btn">
                         <img src="./assets/back-arrow-icon.svg" alt="Go Back" class="icon-img" />
                     </button>
                 </div>
                 <div class="row d-flex align-items-start">
-                    <div class="col-sm-12 col-md-10 offset-md-1 col-lg-7">
-                        <section class="post" data-user-id="post-id">
+                    <div id="post-detail-container" class="col-sm-12 col-md-10 offset-md-1 col-lg-7">
+                        <section class="post">
                             <div class="poster-detail-div d-flex">
-                                <img alt="image" class="profile-pic"/>
+                                <img alt="image" class="profile-pic" id="profile-pic"/>
                                 <div>
                                     <h3 class="user-handle">@user</h3>
                                     <p class="display-name">Display name</p>
                                 </div>
                             </div>
-                            <div class="post-body">
+                            <div class="post-body" id="post-body">
                                 <p>POST BODY testing test test test test test test test test test test test test test test test test</p>
                             </div>
                             <div class="d-flex btn-divs justify-content-end">
                                 <div>
                                     <button class="likes-btn btn d-flex align-items-center">
                                         <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon"/>
-                                        <p class="likes-num">##</p>
+                                        <p class="likes-num" id="likes-num">##</p>
                                     </button>
                                 </div>
                                 <div>
                                     <button class="comments-btn btn d-flex align-items-center">
                                         <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                                        <p class="comments-num">##</p>
+                                        <p class="comments-num" id="comments-num">##</p>
                                     </button>
                                 </div>
                             </div>
@@ -192,7 +220,7 @@
                                 <section class="comment" data-comment-id="comment-id">
                                     <div>
                                         <img />
-                                        <div div>
+                                        <div>
                                             <h4 class="user-handle">@commenter</h4>
                                             <p class="display-name">(<span>display-name</span>)</p>
                                         </div>
@@ -227,38 +255,31 @@
                         </form>
                     </section>
                 </div>
-            </section>
+            </section> -->
             <section id="my-profile-div" class="hidden">
                 <div class="row">
                     <section id="my-profile-details" class="col-sm-12 col-md-6">
                         <div id="set-profile" class="post">
-                            <div>
+                            <div id="profile-details">
                                 <div class="d-flex align-items-center">
-                                    <img alt="Profile" class="profile-pic"/>
-                                    <div>
-                                        <h2 class="user handle">@user</h2>
-                                        <p class="display-name">Display name</p>
+                                    <img alt="Profile" class="profile-pic" id="profile-pic"/>
+                                    <div id="user-info">
+                                        <h2 class="user-handle" id="user-handle">@user</h2>
+                                        <p class="display-name" id="display-name">Display name</p>
                                         <button id="edit-profile" class="custom-btn pink-btn">Edit Profile</button>
+                                        <button id="save-profile" class="custom-btn pink-btn hidden">Save</button>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-around align-items-center my-4">
-                                    <div class="d-flex flex-column align-items-center justify-content-center">
-                                        <p>Followers</p>
-                                        <p>##</p>
-                                    </div>
-                                    <div class="d-flex flex-column align-items-center justify-content-center">
-                                        <p>Following</p>
-                                        <p>##</p>
-                                    </div>
+                                <div class="d-flex justify-content-start align-items-center my-4 px-4">
                                     <div class="d-flex flex-column align-items-center justify-content-center">
                                         <p>Posts</p>
-                                        <p>##</p>
+                                        <p id="posts">##</p>
                                     </div>
                                 </div>
-                                <p id="bio" class="my-4">BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO </p>
+                                <p id="bio" class="my-4 px-4">BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO </p>
                             </div>
-                            <form id="edit-profile" class="edit-profile-form">
-                                <!--Note - just replace the current stuff? Like edit on todo list -->
+                            <!-- <form id="edit-profile" class="edit-profile-form">
+                                Note - just replace the current stuff? Like edit on todo list
                                 <div>
                                     <div>
                                         <label for="update-photo" class="form-label"></label>
@@ -266,25 +287,25 @@
                                     </div>
                                     <div>
                                         <label for="update-username" class="form-label">New Username</label>
-                                        <input type="text" id="update-username"  name="update-username" value="whatever the old one was" class="form-control custom-text-input">
+                                        <input type="text" id="update-username"  name="update-username" value="whatever the old one was" class="form-control custom-text-input update-user-handle">
                                     </div>
                                     <div>
                                         <label for="update-display-name" class="form-label">New Display Name</label>
-                                        <input type="text" id="update-display-name"  name="update-display-name" value="whatever the old one was" class="form-control custom-text-input">
+                                        <input type="text" id="update-display-name"  name="update-display-name" value="whatever the old one was" class="form-control custom-text-input update-display-name">
                                     </div>
                                     <div>
                                         <label for="update-bio" class="form-label">New Bio</label>
-                                        <textarea id="update-bio" name="update-bio" class="form-control custom-text-input" row="4">Whatever the old one was</textarea>
+                                        <textarea id="update-bio" name="update-bio" class="form-control custom-text-input" row="4" class="update-bio">Whatever the old one was</textarea>
                                     </div>
                                 </div>
                                 <button id="update-profile" class="custom-btn pink-btn">Save</button>
-                            </form>
+                            </form> -->
                         </div>
                     </section>
                     <section id="my-posts" class="col-md-6 col-sm-12">
                         <section class="post" data-user-id="post-id">
                             <div class="poster-detail-div d-flex">
-                                <img alt="image" class="profile-pic"/>
+                                <img alt="image" class="profile-pic" id="profile-pic"/>
                                 <div>
                                     <h3 class="user-handle">@user</h3>
                                     <p class="display-name">Display name</p>
@@ -297,7 +318,7 @@
                                 <div>
                                     <button class="likes-btn btn d-flex align-items-center">
                                         <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon"/>
-                                        <p class="likes-num">##</p>
+                                        <p class="likes-num" id="">##</p>
                                     </button>
                                 </div>
                                 <div>
@@ -311,33 +332,24 @@
                     </section>
                 </div>
             </section>
-            <section id="profile-details-div" class="hidden">
+            <!-- <section id="profile-details-div" class="hidden">
                 <div class="row">
                     <section id="my-profile-details" class="col-sm-12 col-md-6">
                         <div id="set-profile" class="post">
                             <div class="d-flex align-items-center">
-                                <img alt="Profile" class="profile-pic"/>
+                                <img alt="Profile" class="profile-pic" id="profile-pic"/>
                                 <div>
                                     <h2 class="user handle">@user</h2>
                                     <p class="display-name">Display name</p>
-                                    <button id="follow-profile" class="custom-btn pink-btn">Follow</button>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-around align-items-center my-4">
-                                <div class="d-flex flex-column align-items-center justify-content-center">
-                                    <p>Followers</p>
-                                    <p>##</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center justify-content-center">
-                                    <p>Following</p>
-                                    <p>##</p>
-                                </div>
+                            <div class="d-flex justify-content-start align-items-center my-4 px-4">
                                 <div class="d-flex flex-column align-items-center justify-content-center">
                                     <p>Posts</p>
-                                    <p>##</p>
+                                    <p id="posts">##</p>
                                 </div>
                             </div>
-                            <p id="bio" class="my-4">BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO </p>
+                            <p id="bio" class="my-4 px-4">BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO </p>
                         </div>
                     </section>
                     <section id="user-posts" class="col-sm-12 col-md-6">
@@ -369,27 +381,7 @@
                         </section>
                     </section>
                 </div>
-            </section>
-            <section id="new-post-div" class="new-post-div hidden">
-                <div class="post new-post-form-div">
-                    <div class="d-flex align-items-center">
-                        <img alt="asdf" class="profile-pic"/>
-                        <div>
-                            <h3 class="user-handle">@posting user</h3>
-                            <p class="display-name">Display Name</p>
-                        </div>
-                    </div>
-                    <form id="new-post-form" class="d-flex flex-column justify-content-center align-items-center">
-                        <div>
-                            <label for="new-post"></label>
-                            <textarea id="new-post" name="new-post" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div>
-                            <button class="custom-btn pink-btn">Post</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
+            </section> -->
         </section>
     </body>
 </html>
