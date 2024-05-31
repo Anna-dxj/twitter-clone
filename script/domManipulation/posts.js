@@ -11,6 +11,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
 
        const newPost = document.createElement('section');
 
+
        if (viewType === 'feed') {
            newPost.className = 'col-sm-12 offset-md-1 col-md-10'
        }
@@ -61,11 +62,15 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
             </div>
         </div>`
 
+        console.log(myPostsContainer)
+
         if (viewType === 'feed') {
             feedPostContainer.insertBefore(newPost, feedPostContainer.firstChild)
         } else if (viewType === 'profile') {
             myPostsContainer.appendChild(newPost)
+            console.log('ok')
         }
+
 }
 
 export function addLikeImg (target) {

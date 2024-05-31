@@ -388,23 +388,26 @@ async function handleShowProfileDiv() {
     const currentUser = await getCurrentUser()
 
     try {
-        console.log(currentUser)
         const userData = await getOneUser(currentUser);
-        const {userhandle, displayname, bio, posts} = userData; 
+        const { userhandle, displayname, bio, posts } = userData; 
         const postIdsArr = Object.keys(posts).reverse();
+        // console.log(postIdsArr); 
+        // return; 
         
         if (!posts) {
             hideEl(myPostsDiv)
+            console.log('hide')
         } else {
             showEl(myPostsDiv)
+            console.log('show')
         }
 
         displayProfileDetails('my profile', userhandle, displayname, bio, postIdsArr.length)
 
 
         for (const postId of postIdsArr) {
-            const { postContent } = await getOnePost(postId); 
-            displayPosts(userhandle, displayname, postContent, postId, currentUser, 'profile')
+            const { postContent, likes } = await getOnePost(postId); 
+            displayPosts(currentUser, userhandle, displayname, postContent, postId, currentUser, 'profile', null, likes)
         }
     
         hideEl(feedDiv)
