@@ -27,6 +27,7 @@ const newPostDiv = document.querySelector('#new-post-div');
 
 // Post operations
 const postContainerDiv = document.querySelector('#post-container-div')
+const userPostsContainerDiv = document.querySelector('#my-posts')
 
 // Nav btns
 const homeBtn = document.querySelector('#home-btn');
@@ -548,5 +549,7 @@ profileBtn.addEventListener('click', handleShowProfileDiv);
 editProfileBtn.addEventListener('click', handleEditProfile); 
 saveProfileBtn.addEventListener('click', handleSaveProfile);
 
-postContainerDiv.addEventListener('click', handleAddLike)
-postContainerDiv.addEventListener('click', handleShowPostDetails)
+postContainerDiv.addEventListener('click', handleAddLike);
+userPostsContainerDiv.addEventListener('click', handleAddLike);
+postContainerDiv.addEventListener('click', handleShowPostDetails);
+userPostsContainerDiv.addEventListener('click', handleShowPostDetails);
