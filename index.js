@@ -251,18 +251,20 @@ async function handleShowHomeDiv() {
     // hideEl(postDetailsDiv);
 
     // read all posts & display 
-    // const allPosts = await getAllPosts(); 
-    // const allPostIdsArr = Object.keys(allPosts);
+    const allPosts = await getAllPosts(); 
+    const allPostIdsArr = Object.keys(allPosts);
+    const currentUser = await getCurrentUser()
+    postContainerDiv.innerHTML = ''
 
-    // for (const postId of allPostIdsArr) {
-    //     const { creatorId, postContent, likes } = allPosts[postId];
-    //     console.log('likes', likes);
-    //     const { userhandle, displayname } = await getOneUser(creatorId); 
+    for (const postId of allPostIdsArr) {
+        const { creatorId, postContent, likes } = allPosts[postId];
+        console.log('likes', likes);
+        const { userhandle, displayname } = await getOneUser(creatorId); 
 
 
-    //     displayPosts(userhandle, displayname, postContent, postId, creatorId, 'feed', null, Object.keys(likes).length)
+        displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
 
-    // }
+    }
 
     // impliment infinite scrolling? 
 
@@ -391,6 +393,7 @@ async function handleShowProfileDiv() {
         const userData = await getOneUser(currentUser);
         const { userhandle, displayname, bio, posts } = userData; 
         const postIdsArr = Object.keys(posts).reverse();
+        myPostsDiv.innerHTML = ''
         // console.log(postIdsArr); 
         // return; 
         
@@ -401,6 +404,7 @@ async function handleShowProfileDiv() {
             showEl(myPostsDiv)
             console.log('show')
         }
+
 
         displayProfileDetails('my profile', userhandle, displayname, bio, postIdsArr.length)
 
@@ -486,7 +490,7 @@ async function handleAddLike(event) {
         const likeImg = postItem.querySelector('.likes-icon')
         const likesNumEl = postItem.querySelector('.likes-num')
 
-        const { creatorId, postContent, likes, dateUpdated } = await getOnePost(postId)
+        const { likes } = await getOnePost(postId)
             // Likes is an object where the key is the userId
         
         if (likes) {
@@ -495,20 +499,20 @@ async function handleAddLike(event) {
 
             if (likesArr.includes(posterId)) {
                 // REMOVE LIKE
-                console.log('already liked')
-                removeLikes(postId, posterId); 
-                removeLikeImg(likeImg); 
+                // console.log('already liked')
+                await removeLikes(postId, posterId); 
                 likesNum--
+                removeLikeImg(likeImg); 
             } else {
                 await addLikes(postId, posterId); 
-                addLikeImg(likeImg)
                 likesNum++
+                addLikeImg(likeImg)
             }
             likesNumEl.textContent = likesNum;
         } else {
             await addLikes(postId, posterId); 
-            addLikeImg(likeImg)
             likesNumEl.textContent++
+            addLikeImg(likeImg)
         }
      }
 
