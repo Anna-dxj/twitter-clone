@@ -1,3 +1,5 @@
+import { hideEl, showEl } from "../utils/hideShowDivs.js";
+
 function displayProfileResults (userArr) {
     const searchReturnDiv = document.querySelector('#search-return')
 
@@ -17,20 +19,47 @@ function displayProfileResults (userArr) {
     })
 }
 
-export function displayProfileDetails (userHandle, displayName, profileImg, bio, postsNum, userId) {
+export function displayProfileDetails (type, userHandle, displayName, bio, postsNum, profileImg) {
     const userHandleTxt = document.querySelector('#user-handle')
     const displayNameTxt = document.querySelector('#display-name');
     const postsNumTxt = document.querySelector('#posts')
     const bioTxt = document.querySelector('#bio')
     const profilePic = document.querySelector('#profile-pic')
+    const editBtn = document.querySelector('#edit-profile')
 
     // if userId===currentId show edit button
 
-    userHandleTxt.textContent = userHandle
-    displayNameTxt.textContent = displayName
+    userHandleTxt.textContent = `@${userHandle}`
+
+    if (displayName) {
+        displayNameTxt.textContent = displayName
+    } else {
+        displayNameTxt.textContent = 'Set display name!'
+    }
+
+    if (bio) {
+        bioTxt.innerHTML = bio
+    } else {
+        bioTxt.innerHTML = 'Set bio and profile image!'
+    }
+
+    if (profileImg) {
+        profilePic.src = profileImg
+    }
+
+    if (postsNum) {
+        postsNumTxt.textContent = postsNum
+    } else {
+        postsNumTxt.textContent = 0
+    }
+
+    if (type === 'other profile') {
+        hideEl(editBtn)
+    } else if (type === 'my profile') {
+        showEl(editBtn)
+    }
+
     // postsNumTxt.textContent = postsNum
-    bioTxt.innerHTML = bio 
-    profilePic.src = profileImg
 }
 
 export function convertToInput (value, type, oldItem, parentItem) {
@@ -44,7 +73,12 @@ export function convertToInput (value, type, oldItem, parentItem) {
         inputEl.classList.add('update-user-handle')
         inputEl.setAttribute('id', 'user-handle')
     }
-    inputEl.value = value;
+
+    if (value === 'Set display name!') {
+        inputEl.placeholder = 'Set display name!'
+    } else {
+        inputEl.value = value;
+    }
     console.log(value);
 
     parentItem.replaceChild(inputEl, oldItem)
@@ -56,7 +90,12 @@ export function convertToTextarea (value, oldItem, parentItem) {
     textareaEl.setAttribute('id', 'bio')
     textareaEl.setAttribute('row', '10'); 
     textareaEl.classList.add('update-bio', 'form-control', 'custom-text-input', 'mx-4')
-    textareaEl.value = value;
+
+    if (value === 'Set bio and profile image!') {
+        textareaEl.placeholder = 'Set display name!'
+    } else {
+        textareaEl.value = value;
+    }
 
     // textareaEl.style.height = 'auto'
     // textareaEl.style.height = `${textareaEl.scrollHeight}px`
@@ -66,6 +105,20 @@ export function convertToTextarea (value, oldItem, parentItem) {
 
 export function convertBack (value, oldItem, targetItem, parentItem, type) {
     const newEl = document.createElement(targetItem); 
+
+    if (!value && type === 'user handle') {
+        targetItem.classList.add('custom-text-warning-input')
+        return; 
+    } else if (!value && type === 'display name') {
+        newEl.textContent = 'Set display name!'
+    } else if (!value && type === 'bio') {
+        newEl.textContent = 'Set bio and profile image!'
+    } else if (value && type === 'user handle') {
+        newEl.textContent = `@${value}`
+    } else {
+        newEl.textContent = value;
+    }
+
     if (type === 'user handle') {
         newEl.classList.add('user-handle');
         newEl.setAttribute('id', 'user-handle')
@@ -76,13 +129,6 @@ export function convertBack (value, oldItem, targetItem, parentItem, type) {
         newEl.classList.add('my-4', 'px-4'); 
         newEl.setAttribute('id', 'bio')
     }
-
-    if (type === 'user handle') {
-        newEl.textContent = `@${value}`;
-    } else {
-        newEl.textContent = value;
-    }
-
 
     parentItem.replaceChild(newEl, oldItem)
 }

@@ -81,9 +81,9 @@
                     <li class="nav-item custom-btn nav-btn" id="create-btn">
                         <img src="./assets/new-post-icon.svg" class="icon-img" alt="Create post"/>
                     </li>
-                    <li class="nav-item custom-btn nav-btn" id="search-btn">
+                    <!-- <li class="nav-item custom-btn nav-btn" id="search-btn">
                         <img src="./assets/search-icon.svg" class="icon-img" alt="Search for User"/>
-                    </li>
+                    </li> -->
                     <li class="nav-item custom-btn nav-btn" id="profile-btn">
                         <img src="./assets/profile-icon.svg" class="icon-img" alt="My Profile"/>
                     </li>
@@ -91,41 +91,14 @@
             </nav>
             <section id="feed-div" class="hidden">
                 <div id="post-container-div" class="row d-flex align-items-center justify-content-center flex-column">
-                    <section class="post col-sm-12 offset-md-1 col-md-10" data-user-id="post-id">
-                        <div class="poster-detail-div d-flex">
-                            <img alt="image" class="profile-pic"/>
-                            <div>
-                                <h3 class="user-handle">@user</h3>
-                                <p class="display-name">Display name</p>
-                            </div>
-                        </div>
-                        <div class="post-body">
-                            <p>POST BODY testing test test test test test test test test test test test test test test test test</p>
-                        </div>
-                        <div class="d-flex btn-divs justify-content-end">
-                            <div>
-                                <button class="likes-btn btn d-flex align-items-center">
-                                    <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon"/>
-                                    <p class="likes-num">##</p>
-                                </button>
-                            </div>
-                            <div>
-                                <button class="comments-btn btn d-flex align-items-center">
-                                    <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                                    <p class="comments-num">##</p>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
                 </div>
             </section>
             <section id="new-post-div" class="new-post-div hidden">
                 <div class="post new-post-form-div">
                     <div class="d-flex align-items-center">
-                        <img alt="asdf" class="profile-pic"/>
                         <div>
-                            <h3 class="user-handle">@posting user</h3>
-                            <p class="display-name">Display Name</p>
+                            <h3 class="user-handle" id="new-post-user-handle">@posting user</h3>
+                            <p class="display-name" id="new-post-display-name">Display Name</p>
                         </div>
                     </div>
                     <form id="new-post-form" class="d-flex flex-column justify-content-center align-items-center">
@@ -139,10 +112,10 @@
                     </form>
                 </div>
             </section>
-            <section id="search-div" class="hidden">
+            <!-- <section id="search-div" class="hidden">
                 <form id="search-form" class="d-flex align-items-center justify-content-center">
-                    <label for="search-user"></label>
-                    <input id="search-user-input" type="text" placeholder="Search for a user" name="search-user" class="form-control">
+                    <label for="search-user-input"></label>
+                    <input id="search-user-input" type="text" placeholder="Search for a user" name="search-user-input" class="form-control">
                     <button id="search-user-btn" class="custom-form-btn" type="button">Search</button>
                 </form>
                 <section id="search-results" class="row">
@@ -182,7 +155,7 @@
                         </div>
                     </div>
                 </section>
-            </section>
+            </section> -->
             <!-- <section id="post-details-div" class="hidden">
                 <div id="back-btn-div">
                     <button class="btn" id="back-btn">
@@ -262,10 +235,9 @@
                         <div id="set-profile" class="post">
                             <div id="profile-details">
                                 <div class="d-flex align-items-center">
-                                    <img alt="Profile" class="profile-pic" id="profile-pic"/>
-                                    <div id="user-info">
-                                        <h2 class="user-handle" id="user-handle">@user</h2>
-                                        <p class="display-name" id="display-name">Display name</p>
+                                    <div id="user-info" class="m-2 p-2">
+                                        <h2 class="user-handle" id="user-handle"></h2>
+                                        <p class="display-name" id="display-name"></p>
                                         <button id="edit-profile" class="custom-btn pink-btn">Edit Profile</button>
                                         <button id="save-profile" class="custom-btn pink-btn hidden">Save</button>
                                     </div>
@@ -276,7 +248,11 @@
                                         <p id="posts">##</p>
                                     </div>
                                 </div>
-                                <p id="bio" class="my-4 px-4">BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO BIO </p>
+                                <div>
+                                    <label for="update-photo"></label>
+                                    <input type="file" accept="image/" id="update-photo" name="update-photo" class="form-control hidden" />
+                                </div>
+                                <p id="bio" class="my-4 px-4"></p>
                             </div>
                             <!-- <form id="edit-profile" class="edit-profile-form">
                                 Note - just replace the current stuff? Like edit on todo list
@@ -303,32 +279,6 @@
                         </div>
                     </section>
                     <section id="my-posts" class="col-md-6 col-sm-12">
-                        <section class="post" data-user-id="post-id">
-                            <div class="poster-detail-div d-flex">
-                                <img alt="image" class="profile-pic" id="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user</h3>
-                                    <p class="display-name">Display name</p>
-                                </div>
-                            </div>
-                            <div class="post-body">
-                                <p>POST BODY testing test test test test test test test test test test test test test test test test</p>
-                            </div>
-                            <div class="d-flex btn-divs justify-content-end">
-                                <div>
-                                    <button class="likes-btn btn d-flex align-items-center">
-                                        <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon"/>
-                                        <p class="likes-num" id="">##</p>
-                                    </button>
-                                </div>
-                                <div>
-                                    <button class="comments-btn btn d-flex align-items-center">
-                                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                                        <p class="comments-num">##</p>
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
                     </section>
                 </div>
             </section>

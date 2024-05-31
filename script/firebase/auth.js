@@ -5,13 +5,13 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, up
 
 let currentUser = null; 
 
-export async function getUser(email, password) {
+export async function loginUser(email, password) {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user; 
         currentUser = user;
 
-        const userRef = ref(db, `user/${user.id}`)
+        const userRef = ref(db, `user/${user.uid}`)
         const snapshot = await get(userRef);
 
         if (snapshot) {
@@ -20,5 +20,28 @@ export async function getUser(email, password) {
     } catch (error) {
         throw error
     }
+}
 
+export async function createUser(email, password, userhandle) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const newUser = userCredential.user; 
+
+        const userRef = ref(db, `user/${newUser.uid}`);
+
+        await set(userRef, {
+            email: newUser.email, 
+            userhandle: userhandle, 
+            posts: {}
+        })
+
+        currentUser = newUser; 
+        return newUser; 
+    } catch (error) {
+        throw error
+    }
+}
+
+export function getCurrentUser() {
+    return currentUser.uid;
 }
