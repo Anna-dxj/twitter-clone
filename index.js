@@ -1,7 +1,7 @@
 import { showEl, hideEl, removeAt } from "./script/utils/hideShowDivs.js";
-import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg } from "./script/domManipulation/index.js";
+import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost } from "./script/domManipulation/index.js";
 import { loginUser, createUser, getCurrentUser } from "./script/firebase/auth.js";
-import { getOneUser, getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes } from "./script/crudOperations/index.js";
+import { getOneUser, getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost } from "./script/crudOperations/index.js";
 
 
 // login form pages
@@ -318,7 +318,7 @@ async function handleCreateNewPost(event) {
 
         newPostInput.value = '' 
 
-        displayPosts(userhandle, displayname, postContent, postId, currentUser, 'feed')
+        displayPosts(currentUser, userhandle, displayname, postContent, postId, currentUser, 'feed')
         
         // hideEl(searchDiv);
         hideEl(myProfileDiv);
@@ -519,6 +519,21 @@ async function handleAddLike(event) {
 
 }
 
+function handleDeletePost(event) {
+    const targetEl = event.target; 
+    const isDeleteBtn = targetEl.classList.contains('delete-icon') || targetEl.classList.contains('delete-btn')
+
+    if (isDeleteBtn) {
+        console.log('delete btn')
+        const postItem = targetEl.closest('.post');
+        const postId = postItem.getAttribute('data-post-id'); 
+        const posterId = postItem.getAttribute('data-poster-id'); 
+        
+        deletePost(postId, posterId);
+        removePost(postItem)
+    }
+}
+
 function handleShowPostDetails(event) {
     const targetEl = event.target
     const isCommentBtn = targetEl.classList.contains('comments-btn') || targetEl.classList.contains('comments-icon') || targetEl.classList.contains('comments-num');
@@ -551,5 +566,7 @@ saveProfileBtn.addEventListener('click', handleSaveProfile);
 
 postContainerDiv.addEventListener('click', handleAddLike);
 userPostsContainerDiv.addEventListener('click', handleAddLike);
+postContainerDiv.addEventListener('click', handleDeletePost); 
+userPostsContainerDiv.addEventListener('click', handleDeletePost); 
 postContainerDiv.addEventListener('click', handleShowPostDetails);
 userPostsContainerDiv.addEventListener('click', handleShowPostDetails);

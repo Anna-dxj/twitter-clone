@@ -12,6 +12,8 @@
     --dark-purple-active: #261e38;
     --dark-purple: #716099;
     --warning: #dc3545;
+    --warning-light: #dc3546a4;
+    --button-hover: #c7c7c765; 
 
     margin: 0px; 
     padding: 0px;
@@ -200,9 +202,17 @@ nav ul {
     margin-right: 0.5rem; 
 }
 
-.likes-icon, .comments-icon {
+.likes-icon, .comments-icon, .delete-icon {
     height: 2rem; 
     width: auto; 
+}
+
+.likes-btn:hover, .comments-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.delete-btn:hover {
+    background-color: var(--warning-light); 
 }
 
 .likes-num, .comments-num {

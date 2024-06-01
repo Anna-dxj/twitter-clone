@@ -36,31 +36,66 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
         likesImgSrc = './assets/heart-empty-icon.svg'
        }
 
-
-       newPost.innerHTML = `
-       <div class="poster-detail-div d-flex">
-            <div class='m-2 p-2'>
-                <h3 class="user-handle">@${userHandle}</h3>
-                <p class="display-name">${displayName}</p>
+    //    console.log('current', currentUser);
+    //    console.log('user')
+       if (currentUser === userId) {
+        console.log('same user'); 
+           newPost.innerHTML = `
+           <div class="poster-detail-div d-flex justify-content-between">
+                <div class='m-2 p-2'>
+                    <h3 class="user-handle">@${userHandle}</h3>
+                    <p class="display-name">${displayName}</p>
+                </div>
+                <div class="m-2 px-2">
+                    <button class="delete-btn btn d-flex align-items-center">
+                        <img src="./assets/delete-icon.svg" alt="Delete" class="delete-icon"/>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="post-body">
-            <p>${content}</p>
-        </div>
-        <div class="d-flex btn-divs justify-content-end">
-            <div>
-                <button class="likes-btn btn d-flex align-items-center">
-                    <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
-                    <p class="likes-num">${likesNum}</p>
-                </button>
+            <div class="post-body">
+                <p>${content}</p>
             </div>
-            <div>
-                <button class="comments-btn btn d-flex align-items-center">
-                    <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                    <p class="comments-num">${commentNum}</p>
-                </button>
+            <div class="d-flex btn-divs justify-content-end">
+                <div>
+                    <button class="likes-btn btn d-flex align-items-center">
+                        <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
+                        <p class="likes-num">${likesNum}</p>
+                    </button>
+                </div>
+                <div>
+                    <button class="comments-btn btn d-flex align-items-center">
+                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
+                        <p class="comments-num">${commentNum}</p>
+                    </button>
+                </div>
+            </div>`
+       } else {
+        console.log('diff user')
+            newPost.innerHTML = `
+            <div class="poster-detail-div d-flex">
+                <div class='m-2 p-2'>
+                    <h3 class="user-handle">@${userHandle}</h3>
+                    <p class="display-name">${displayName}</p>
+                </div>
             </div>
-        </div>`
+            <div class="post-body">
+                <p>${content}</p>
+            </div>
+            <div class="d-flex btn-divs justify-content-end">
+                <div>
+                    <button class="likes-btn btn d-flex align-items-center">
+                        <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
+                        <p class="likes-num">${likesNum}</p>
+                    </button>
+                </div>
+                <div>
+                    <button class="comments-btn btn d-flex align-items-center">
+                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
+                        <p class="comments-num">${commentNum}</p>
+                    </button>
+                </div>
+            </div>`
+       }
 
         console.log(myPostsContainer)
 
@@ -80,6 +115,11 @@ export function addLikeImg (target) {
 export function removeLikeImg (target) {
     target.src = './assets/heart-empty-icon.svg'
 }
+
+export function removePost(target) {
+    const parentNode = target.parentNode
+    parentNode.removeChild(target); 
+} 
 
 function displayPostDetails(userHandle, displayName, commentNum, likeNum, content, commentArr) {
     const userHandleTxt = document.querySelector('#user-handle')

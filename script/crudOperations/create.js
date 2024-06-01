@@ -7,7 +7,8 @@ export async function createPost(currentUserId, postContent) {
     const postData = {
         creatorId: currentUserId,
         postContent: postContent,
-        dateUpdated: new Date().toISOString()
+        dateUpdated: new Date().toISOString(),
+        likes: {},
     }
 
     const returnObj = {
