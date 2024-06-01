@@ -1,7 +1,9 @@
 :root {
     --backround-color: #41413d;
     /* --darker-background-color: #282927; */
-    --darker-background-color: rgb(81, 83, 79);
+    --darker-background-color: #51534f;
+    --darker-background-highlight: #51534f73;
+    --darker-background-active: #8d8f8b; 
     --card-areas: #FAFAFA;
     --primary-text:#dddddd;
     --secondary-text: #8a8a8a;
@@ -138,7 +140,7 @@ p {
     padding-bottom: 5rem; 
 }
 
-nav {
+.app-nav {
     background-color: var(--card-areas); 
     padding: 0; 
     position: fixed; 
@@ -146,7 +148,7 @@ nav {
     width: 100%;
 }
 
-nav ul {
+.app-nav ul {
     width: 100%; 
     margin: 0; 
     padding: 0;
@@ -218,6 +220,40 @@ nav ul {
 .likes-num, .comments-num {
     margin: 0 0.4rem; 
     color: var(--secondary-text); 
+}
+
+.feed-page-navigator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-nav {
+    background-color: var(--darker-background-color);
+    color: var(--primary-text); 
+    font-weight: 600;  
+    margin: 0.3rem; 
+    padding: 0.7rem;
+    border-radius: 0.3rem;  
+    transition: all 0.4s;
+    font-family: 'Inter', sans-serif; 
+}
+
+.prev-page-btn:hover, .next-page-btn:hover {
+    cursor: pointer;
+    background-color: var(--darker-background-highlight);
+}
+
+.prev-page-btn:active, .next-page-btn:active {
+    background-color: var(--darker-background-active)
+}
+
+.inactive {
+    background-color: var(--darker-background-active);
+}
+
+.inactive:hover {
+    cursor: default
 }
 
 .update-user-handle {
@@ -375,6 +411,12 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
     justify-content: center;
 }
 
+#my-page-navigator {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem; 
+}
+
 .new-post-form-div {
     width: 100%; 
 }
@@ -426,7 +468,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
         padding-left: 4rem; 
     }
 
-    nav {
+    .app-nav {
         padding: 0; 
         position: fixed; 
         top: 0; 
@@ -435,7 +477,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
         width: auto; 
     } 
 
-    nav ul {
+    .app-nav ul {
         padding-top: 5rem; 
         display: flex; 
         flex-direction: column; 

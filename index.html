@@ -15,7 +15,7 @@
         <script src="index.js" defer type="module"></script>
     </head>
     <body>
-        <section id="login-signup-div" class=" login-signup-div">
+        <section id="login-signup-div" class="login-signup-div ">
             <div id="login-form" class="login-signup-form">
                 <h1>Login</h1>
                 <div class="warning-div">
@@ -73,7 +73,7 @@
             </div>
         </section>
         <section id="auth-div" class="hidden">
-            <nav>
+            <nav class="app-nav">
                 <ul>
                     <li class="nav-item custom-btn nav-btn" id="home-btn">
                         <img src="./assets/home-icon.svg" class="icon-img" alt="Home"/>
@@ -91,6 +91,15 @@
             </nav>
             <section id="feed-div" class="hidden">
                 <div id="post-container-div" class="row d-flex align-items-center justify-content-center flex-column">
+                </div>
+                <div id="feed-page-navigator" class="feed-page-navigator hidden">
+                    <nav aria-label="page-navigation">
+                        <ul class="pagination">
+                            <li id="feed-prev-page-btn" class="page-nav prev-page-btn custom-btn">Previous</li>
+                            <li class="page-nav"><span id="feed-current-page"></span> of <span id="feed-all-pages"></span></li>
+                            <li id="feed-next-page-btn" class="page-nav next-page-btn custom-btn">Next</li>
+                        </ul>
+                    </nav>
                 </div>
             </section>
             <section id="new-post-div" class="new-post-div hidden">
@@ -245,7 +254,7 @@
                                 <div class="d-flex justify-content-start align-items-center my-4 px-4">
                                     <div class="d-flex flex-column align-items-center justify-content-center">
                                         <p>Posts</p>
-                                        <p id="posts">##</p>
+                                        <p id="posts"></p>
                                     </div>
                                 </div>
                                 <div>
@@ -278,7 +287,18 @@
                             </form> -->
                         </div>
                     </section>
-                    <section id="my-posts" class="col-md-6 col-sm-12 hidden">
+                    <section class="col-md-6 col-sm-12">
+                        <div id="my-page-navigator" class="my-page-navigator hidden">
+                            <nav aria-label="page-navigation">
+                                <ul class="pagination">
+                                    <li id="my-prev-page-btn" class="page-nav prev-page-btn custom-btn">Previous</li>
+                                    <li class="page-nav"><span id="my-current-page"></span> of <span id="my-profile-all-pages"></span></li>
+                                    <li id="my-next-page-btn" class="page-nav next-page-btn custom-btn">Next</li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <section id="my-posts">
+                        </section>
                     </section>
                 </div>
             </section>

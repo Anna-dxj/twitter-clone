@@ -39,7 +39,6 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
     //    console.log('current', currentUser);
     //    console.log('user')
        if (currentUser === userId) {
-        console.log('same user'); 
            newPost.innerHTML = `
            <div class="poster-detail-div d-flex justify-content-between">
                 <div class='m-2 p-2'>
@@ -70,7 +69,6 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
                 </div>
             </div>`
        } else {
-        console.log('diff user')
             newPost.innerHTML = `
             <div class="poster-detail-div d-flex">
                 <div class='m-2 p-2'>
@@ -97,13 +95,10 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
             </div>`
        }
 
-        console.log(myPostsContainer)
-
         if (viewType === 'feed') {
             feedPostContainer.insertBefore(newPost, feedPostContainer.firstChild)
         } else if (viewType === 'profile') {
             myPostsContainer.appendChild(newPost)
-            console.log('ok')
         }
 
 }

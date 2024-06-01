@@ -5,6 +5,7 @@ import { getDatabase, ref, push, set, update } from 'https://www.gstatic.com/fir
 export async function createPost(currentUserId, postContent) {
     const postId = push(ref(db, 'posts')).key;
     const postData = {
+        postId: postId,
         creatorId: currentUserId,
         postContent: postContent,
         dateUpdated: new Date().toISOString(),
