@@ -1,6 +1,6 @@
 import { auth, db } from './db.js';
 import { ref, get, set } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js';
 
 let currentUser = null; 
 
@@ -43,4 +43,13 @@ export async function createUser(email, password, userhandle) {
 
 export function getCurrentUser() {
     return currentUser.uid;
+}
+
+export async function logoutUser() {
+    try {
+        await signOut(auth);
+        currentUser = null; 
+    } catch (error) {
+        throw error
+    }
 }

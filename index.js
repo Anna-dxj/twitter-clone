@@ -1,6 +1,6 @@
 import { showEl, hideEl, removeAt, calculateMaxPage } from "./script/utils/index.js";
 import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost } from "./script/domManipulation/index.js";
-import { loginUser, createUser, getCurrentUser } from "./script/firebase/auth.js";
+import { loginUser, createUser, getCurrentUser, logoutUser } from "./script/firebase/auth.js";
 import { getOneUser, getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts } from "./script/crudOperations/index.js";
 
 
@@ -23,7 +23,6 @@ const feedDiv = document.querySelector('#feed-div');
 const feedNextBtn = document.querySelector('#feed-next-page-btn');
 const feedPrevBtn = document.querySelector('#feed-prev-page-btn');
 
-// const searchDiv = document.querySelector('#search-div');
 const myProfileDiv = document.querySelector('#my-profile-div');
 const myProfileNextBtn = document.querySelector('#my-next-page-btn');
 const myProfilePrevBtn = document.querySelector('#my-prev-page-btn')
@@ -31,24 +30,19 @@ const myProfilePrevBtn = document.querySelector('#my-prev-page-btn')
 const newPostDiv = document.querySelector('#new-post-div');
 // const postDetailsDiv = document.querySelector('#post-details-div');
 
-// Post operations
+// Post Containers
 const postContainerDiv = document.querySelector('#post-container-div')
 const userPostsContainerDiv = document.querySelector('#my-posts')
 
 // Nav btns
 const homeBtn = document.querySelector('#home-btn');
 const createBtn = document.querySelector('#create-btn');
-const searchBtn = document.querySelector('#search-btn');
+// const searchBtn = document.querySelector('#search-btn');
 const myProfileBtn = document.querySelector('#profile-btn');
+const logoutBtn = document.querySelector('#logout-btn')
 
 // newPostDiv buttons
 const createPostBtn = document.querySelector('#create-post');
-
-// searchDiv buttons
-const searchUserBtn = document.querySelector('#search-user-btn');
-const searchUserForm = document.querySelector('#search-form')
-// const searchReturnDiv = document.querySelector('#search-return');
-const profileDetailsDiv = document.querySelector('#profile-details-div')
 
 // profileDiv buttons
 const editProfileBtn = document.querySelector('#edit-profile');
@@ -577,6 +571,18 @@ function handleShowPostDetails(event) {
     }
 }
 
+async function handleLogout() {
+    console.log('logout'); 
+    try {
+        await logoutUser()
+        hideEl(authSections); 
+        showEl(loginForm);
+        showEl(authForms);
+    } catch (error) {
+        
+    }
+}
+
 loginBtn.addEventListener('click', handleLogin);
 viewSignupBtn.addEventListener('click', handleViewSignup);
 signupBtn.addEventListener('click', handleSignup);
@@ -590,7 +596,8 @@ myProfileBtn.addEventListener('click', handleShowMyProfileDiv);
 editProfileBtn.addEventListener('click', handleEditProfile); 
 saveProfileBtn.addEventListener('click', handleSaveProfile);
 myProfilePrevBtn.addEventListener('click', handleShowPrevMyProfilePage);
-myProfileNextBtn.addEventListener('click', handleShowNextMyProfilePage)
+myProfileNextBtn.addEventListener('click', handleShowNextMyProfilePage);
+logoutBtn.addEventListener('click', handleLogout);
 
 postContainerDiv.addEventListener('click', handleAddLike);
 userPostsContainerDiv.addEventListener('click', handleAddLike);
