@@ -84,30 +84,17 @@ async function handleLogin(event) {
             passwordInput.classList.remove('custom-text-warning-input')
         }
     
-        // Login
         const {user, userData} = await loginUser(emailValue, passwordValue)
-        
-        // console.log(user);
-        // console.log(userData); 
 
         if (userData) {
-            console.log('userData', userData)
-            // clear form
             emailInput.value = ''
             passwordInput.value = ''
             
-            // Hide warnings
             hideEl(incorrectCredentialsWarning);
             hideEl(tooManyAttemptsWarning); 
 
-            // Remove custom-text-warning-input 
             emailInput.classList.remove('custom-text-warning-input')
             passwordInput.classList.remove('custom-text-warning-input')
-
-            // show proper divs
-            // read all posts & display 
-            
-            console.log('test'); 
             
             const allPosts = await getAllPosts(); 
             
@@ -127,15 +114,7 @@ async function handleLogin(event) {
             
                     displayPosts(user.uid, userData.userhandle, userData.displaname, postContent, postId, creatorId, 'feed', null, likes)
                 }
-                // const allPostIdsArr = Object.keys(allPosts);
-    
-                // for (const postId of allPostIdsArr) {
-                //     const {creatorId, postContent, likes } = allPosts[postId];
-    
-                //     displayPosts(user.uid, userData.userhandle, userData.displayname, postContent, postId, creatorId, 'feed', null, likes)
-                // }
-    
-                // impliment infinite scrolling? 
+ 
             }
 
             hideEl(authForms);
@@ -143,12 +122,9 @@ async function handleLogin(event) {
             showEl(authSections);
         }
     } catch (error) {
-        // Clear input values 
         emailInput.value = ''
         passwordInput.value = ''
-        console.log('login-error:, ', error)
 
-        // handle errors 
         if (error.code === 'auth/too-many-requests') {
             showEl(tooManyRequestsWarning);
         } else {
@@ -224,7 +200,6 @@ async function handleSignup(event) {
     
         await createUser(emailValue, passwordValue, usernameValue);
         
-        // remove warning input 
         emailInput.classList.remove('custom-text-warning-input')
         passwordInput.classList.remove('custom-text-warning-input')
         confirmPasswordInput.classList.remove('custom-text-warning-input')
@@ -275,14 +250,9 @@ function handleViewSignup() {
 }
 
 async function handleShowHomeDiv() {
-    console.log('home')
-    // hideEl(searchDiv);
     hideEl(myProfileDiv);
     hideEl(newPostDiv);
     currentFeedPage = 1
-    // hideEl(postDetailsDiv);
-
-    // read all posts & display 
     
     const allPosts = await fetchPosts(currentFeedPage, 'feed'); 
     const currentUser = await getCurrentUser();
@@ -301,21 +271,6 @@ async function handleShowHomeDiv() {
         displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
     }
 
-    // const allPostIdsArr = Object.keys(allPosts);
-    // const currentUser = await getCurrentUser()
-
-    // for (const postId of allPostIdsArr) {
-    //     const { creatorId, postContent, likes } = allPosts[postId];
-    //     console.log('likes', likes);
-    //     const { userhandle, displayname } = await getOneUser(creatorId); 
-
-
-    //     displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
-
-    // }
-
-    // impliment infinite scrolling? 
-
 
     showEl(feedDiv); 
 }
@@ -329,7 +284,6 @@ async function handleShowPrevFeedPage() {
         currentFeedPage--; 
         postContainerDiv.innerHTML = ''
 
-        // const allPostsNum = await getAllPosts().length; 
         const posts = await fetchPosts(currentFeedPage, 'feed'); 
         const currentUser = await getCurrentUser();
 
@@ -378,16 +332,12 @@ async function handleShowCreateDiv() {
         const currentUser = await getCurrentUser();
         const {userhandle, displayname} = await getOneUser(currentUser);
 
-        // console.log(userhandle, displayname);
         userhandleEl.textContent = `@${userhandle}`;
         displaynameEl.textContent = displayname; 
     
         hideEl(feedDiv)
-        // hideEl(searchDiv)
         hideEl(myProfileDiv)
-    
-        // Get user and show it on profile info 
-        // hideEl(postDetailsDiv)
+
         showEl(newPostDiv)
     } catch (error) {
         console.error(error)
@@ -400,10 +350,7 @@ async function handleCreateNewPost(event) {
     try {
         event.preventDefault()
 
-        // console.log('Post created:', newPostInput.value)
-    
         const newPostBody = newPostInput.value.trim()
-        // console.log(newPostBody)
     
         if (!newPostBody) {
             return;
@@ -417,7 +364,6 @@ async function handleCreateNewPost(event) {
 
         displayPosts(currentUser, userhandle, displayname, postContent, postId, currentUser, 'feed')
         
-        // hideEl(searchDiv);
         hideEl(myProfileDiv);
         hideEl(newPostDiv);
     
@@ -428,80 +374,21 @@ async function handleCreateNewPost(event) {
     }
 }
 
-// function handleShowSearchDiv() {
-//     hideEl(feedDiv)
-//     hideEl(newPostDiv)
-//     hideEl(myProfileDiv)
-//     // hideEl(postDetailsDiv)
-//     showEl(searchDiv)
-// }
-
-// async function handleSearchUser(event) {
-//     const searchUserInput = document.querySelector('#search-user-input')
-//     const emptySearchDiv = document.querySelector('#empty-search');
-//     try {
-//         event.preventDefault()
-        
-//         const searchUserValue = searchUserInput.value.trim()
-        
-//         if (!searchUserValue) {
-//             return; 
-//         }
-//         console.log('search'); 
-        
-//         const usersArr = await getUsersByKeyword(searchUserValue)
-//         console.log(usersArr)
-//         searchUserInput.value = ''
-        
-//     } catch (error) {
-//         console.log('error', error)
-//     }
-
-//     // TODO: get users 
-//     // TODO: display users with that
-//     // if no users diaplay emptySearchDiv
-//     // if users display searchResultsDiv
-
-// }
-
-// function handleOtherProfileDetails(event) {
-//     const targetEl = event.target;
-//     const isProfileResult = targetEl.classList.contains('profile-result');
-    
-//     if (isProfileResult) {
-//         console.log(targetEl);
-//         // GET USERID
-//         // READ USER SINGULAR 
-//         // DISPLAY 
-//         hideEl(searchDiv);
-//         // Note need to conditionally render the save/edit button
-//         // displayProfileDetails(userHandle, displayName, profileImg, bio, null, userId)
-//         showEl(myProfileDiv);
-//     }
-
-// }
-
 async function handleShowMyProfileDiv() {
-    console.log('profile')
     const myPostsDiv = document.querySelector('#my-posts')
-    // set the email input to 
     const currentUser = await getCurrentUser()
 
     try {
         const userData = await getOneUser(currentUser);
         const { userhandle, displayname, bio, posts } = userData; 
         myPostsDiv.innerHTML = ''
-        // console.log(postIdsArr); 
-        // return; 
         
         if (!posts) {
             hideEl(myPostsDiv)
             displayProfileDetails('my profile', userhandle, displayname, bio)
-            console.log('hide')
         } else {
             const postIdsArr = Object.keys(posts).reverse();
             showEl(myPostsDiv)
-            console.log('show')
             
             displayProfileDetails('my profile', userhandle, displayname, bio, postIdsArr.length)
 
@@ -533,8 +420,6 @@ async function handleShowMyProfileDiv() {
     } catch (error) {
         console.error(error)
     }
-    // console.log(currentUser.uid); 
-
 }
 
 function handleEditProfile(event) {
@@ -543,7 +428,6 @@ function handleEditProfile(event) {
     const userHandle = document.querySelector('#user-handle');
     const displayName = document.querySelector('#display-name'); 
     const bio = document.querySelector('#bio')
-    // const imageInput = document.querySelector('#update-photo')
     
     event.preventDefault()
     hideEl(editProfileBtn)
@@ -551,11 +435,9 @@ function handleEditProfile(event) {
 
     const userHandleValue = removeAt(userHandle.textContent)
     
-    console.log(userHandle.parentNode, userInfoDiv);
     convertToInput(userHandleValue, 'user handle', userHandle, userInfoDiv);
     convertToInput(displayName.textContent, 'display name', displayName, userInfoDiv);
     convertToTextarea(bio.textContent, bio, profileDetailsDiv)
-    // showEl(imageInput); 
 }
 
 async function handleSaveProfile(event) {
@@ -564,14 +446,12 @@ async function handleSaveProfile(event) {
     const userHandleInput = document.querySelector('#user-handle');
     const displayNameInput = document.querySelector('#display-name'); 
     const bioInput = document.querySelector('#bio');
-    // const imageInput = document.querySelector('#update-photo')
 
     try {
         event.preventDefault()
         const userhandleValue = userHandleInput.value.trim(); 
         const displayNameValue = displayNameInput.value.trim(); 
         const bioValue = bioInput.value.trim();
-        // const imageValue = imageInput.files[0]
 
         const currentUser = await getCurrentUser();
 
@@ -643,7 +523,6 @@ async function handleAddLike(event) {
     const isLikeBtn = targetEl.classList.contains('likes-btn') || targetEl.classList.contains('likes-icon') || targetEl.classList.contains('likes-num'); 
 
      if (isLikeBtn) {
-        // console.log('likeBtn!')
         const postItem = targetEl.closest('.post')
         const postId = postItem.getAttribute('data-post-id')
         const posterId = postItem.getAttribute('data-poster-id')
@@ -651,15 +530,12 @@ async function handleAddLike(event) {
         const likesNumEl = postItem.querySelector('.likes-num')
 
         const { likes } = await getOnePost(postId)
-            // Likes is an object where the key is the userId
-        
+
         if (likes) {
             const likesArr = Object.keys(likes)
             let likesNum = likesArr.length;
 
             if (likesArr.includes(posterId)) {
-                // REMOVE LIKE
-                // console.log('already liked')
                 await removeLikes(postId, posterId); 
                 likesNum--
                 removeLikeImg(likeImg); 
@@ -683,7 +559,6 @@ function handleDeletePost(event) {
     const isDeleteBtn = targetEl.classList.contains('delete-icon') || targetEl.classList.contains('delete-btn')
 
     if (isDeleteBtn) {
-        console.log('delete btn')
         const postItem = targetEl.closest('.post');
         const postId = postItem.getAttribute('data-post-id'); 
         const posterId = postItem.getAttribute('data-poster-id'); 
@@ -702,17 +577,6 @@ function handleShowPostDetails(event) {
     }
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     const profileResults = document.querySelectorAll('.profile-result');
-
-//     profileResults.forEach(profileResult => {
-//         profileResult.addEventListener('click', handleOtherProfileDetails)
-//     })
-// })
-
-// prevBtns.forEach(prevBtn => prevBtn.addEventListener('click', handleShowPrevPage));
-// nextBtns.forEach(nextBtn => nextBtn.addEventListener('click', handleShowNextPage))
-
 loginBtn.addEventListener('click', handleLogin);
 viewSignupBtn.addEventListener('click', handleViewSignup);
 signupBtn.addEventListener('click', handleSignup);
@@ -722,8 +586,6 @@ feedPrevBtn.addEventListener('click', handleShowPrevFeedPage)
 feedNextBtn.addEventListener('click', handleShowNextFeedPage)
 createBtn.addEventListener('click', handleShowCreateDiv);
 createPostBtn.addEventListener('click', handleCreateNewPost)
-// searchBtn.addEventListener('click', handleShowSearchDiv);
-// searchUserForm.addEventListener('submit', handleSearchUser);
 myProfileBtn.addEventListener('click', handleShowMyProfileDiv); 
 editProfileBtn.addEventListener('click', handleEditProfile); 
 saveProfileBtn.addEventListener('click', handleSaveProfile);

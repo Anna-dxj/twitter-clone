@@ -8,8 +8,6 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
     const myProfileNav = document.querySelector('#my-page-navigator');
     const myCurrentPageTxt = document.querySelector('#my-current-page')
 
-    // console.log('currentPage', pageNum)
-    
     const start = (pageNum - 1) * 10; 
     const end = start + 10; 
     if (type === 'feed') {
@@ -25,11 +23,9 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
         
         
         const paginatedPosts = allPosts.reverse().slice(start, end).reverse()
-        // const postSlice = Object.values(allPosts).slice(start, end); 
     
         const postWithUserDetails = await Promise.all(
             paginatedPosts.map(async (post) => {
-                // console.log(post); 
                 const { creatorId, postContent, postId, likes } = post; 
                 const { userhandle, displayname } = await getOneUser(creatorId); 
                 return { userhandle, displayname, postContent, postId, creatorId, likes }
@@ -67,11 +63,6 @@ export async function getAllPosts() {
         if (snapshot.exists()) {
             const posts = snapshot.val();
             const postsArr = Object.keys(posts).map(key => ({ id: key, ...posts[key] }));
-            const postsArrCopy = [...postsArr]
-            const sortedArr = postsArrCopy.reverse()
-            // console.log('sortedArr', sortedArr)
-            // console.log('postsArr', postsArr)
-            // console.log(postsArr === sortedArr)
             return postsArr; 
         } else {
             return {}; 
@@ -85,7 +76,6 @@ export async function getOnePost(postId) {
         const snapshot = await get(postRef);
 
         if (snapshot.exists()) {
-            // console.log(snapshot.val())
             return snapshot.val()
         } else {
             throw new Error('Post data not found!')
@@ -101,17 +91,12 @@ export async function getUsersByKeyword(keyword) {
     )
 
     try {
-        console.log(keyword)
-
         const snapshot = await get(queryRef);
         const results = []
 
         snapshot.forEach(child => {
             results.push(child.val())
         })
-
-        console.log(results.length)
-        // return results;
     } catch (error) {
         console.error('Could not get users:', error)
     }

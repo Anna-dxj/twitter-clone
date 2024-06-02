@@ -1,7 +1,6 @@
 import { auth, db } from './db.js';
-import { showEl, hideEl } from '../utils/hideShowDivs.js';
 import { ref, get, set } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js';
 
 let currentUser = null; 
 

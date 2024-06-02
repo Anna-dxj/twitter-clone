@@ -36,8 +36,6 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
         likesImgSrc = './assets/heart-empty-icon.svg'
        }
 
-    //    console.log('current', currentUser);
-    //    console.log('user')
        if (currentUser === userId) {
            newPost.innerHTML = `
            <div class="poster-detail-div d-flex justify-content-between">

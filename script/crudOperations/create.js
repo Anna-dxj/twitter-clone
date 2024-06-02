@@ -1,6 +1,5 @@
 import { db } from "../firebase/db.js";
-import { getOneUser } from "./read.js";
-import { getDatabase, ref, push, set, update } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
+import { ref, push, update } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
 
 export async function createPost(currentUserId, postContent) {
     const postId = push(ref(db, 'posts')).key;
@@ -23,8 +22,6 @@ export async function createPost(currentUserId, postContent) {
 
     try {
         await update(ref(db), updateDatabase); 
-        console.log(updateDatabase);
-        console.log(await getOneUser(currentUserId))
         return returnObj
     } catch (error) {
         console.error('Post creation error: ', error)

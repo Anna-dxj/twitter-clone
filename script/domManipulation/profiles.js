@@ -27,8 +27,6 @@ export function displayProfileDetails (type, userHandle, displayName, bio, posts
     const profilePic = document.querySelector('#profile-pic')
     const editBtn = document.querySelector('#edit-profile')
 
-    // if userId===currentId show edit button
-
     userHandleTxt.textContent = `@${userHandle}`
 
     if (displayName) {
@@ -59,7 +57,6 @@ export function displayProfileDetails (type, userHandle, displayName, bio, posts
         showEl(editBtn)
     }
 
-    // postsNumTxt.textContent = postsNum
 }
 
 export function convertToInput (value, type, oldItem, parentItem) {
@@ -79,8 +76,6 @@ export function convertToInput (value, type, oldItem, parentItem) {
     } else {
         inputEl.value = value;
     }
-    console.log(value);
-
     parentItem.replaceChild(inputEl, oldItem)
 }
 
@@ -96,9 +91,6 @@ export function convertToTextarea (value, oldItem, parentItem) {
     } else {
         textareaEl.value = value;
     }
-
-    // textareaEl.style.height = 'auto'
-    // textareaEl.style.height = `${textareaEl.scrollHeight}px`
 
     parentItem.replaceChild(textareaEl, oldItem)
 }

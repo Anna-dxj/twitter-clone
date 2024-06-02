@@ -1,7 +1,5 @@
 import { db } from '../firebase/db.js'
 import { ref, set, update, get } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js';
-import { getOnePost } from './read.js';
-
 
 export async function updateUserInfo(userId, userhandle, displayname, bio) {
     try {
@@ -21,8 +19,6 @@ export async function addLikes(postId, userId) {
 
     try {
         await update(postRef, { likes: {[userId]: true}}) 
-        console.log('postId', postId, 'userId', userId)
-
     } catch (error) {
         console.error(error)
     }
@@ -40,7 +36,6 @@ export async function removeLikes (postId, userId) {
 
             await set(postRef, likesObj);
 
-            console.log('unliked!')
         }
 
 
