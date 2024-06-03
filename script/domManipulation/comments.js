@@ -1,6 +1,13 @@
-export function displayComments(userHandle, displayName, commentBody) {
+import { showEl } from "../utils/index.js";
+
+export function displayComments(userHandle, displayName, commentBody, commentId) {
     const commentContainer = document.querySelector('#comment-section')
     const newComment = document.createElement('section');
+    
+    showEl(commentContainer)
+
+    newComment.setAttribute('data-comment-id', commentId); 
+    newComment.classList.add('px-3', 'mx-1', 'my-2')
 
     newComment.innerHTML = `
     <div>
@@ -9,6 +16,9 @@ export function displayComments(userHandle, displayName, commentBody) {
     </div>
     <p>${commentBody}</p>`
 
-    newComment.appendChild(commentContainer)
+    // console.log(newComment);
+
+    // newComment.appendChild(commentContainer)
+    commentContainer.appendChild(newComment)
 
 }

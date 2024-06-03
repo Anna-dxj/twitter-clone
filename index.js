@@ -1,8 +1,8 @@
-import { showEl, hideEl, removeAt, calculateMaxPage } from "./script/utils/index.js";
-import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost } from "./script/domManipulation/index.js";
+import { showEl, hideEl, removeAt } from "./script/utils/index.js";
+import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost, clearPostDetailDiv, displayPostDetails, displayComments } from "./script/domManipulation/index.js";
 import { loginUser, createUser, getCurrentUser, logoutUser } from "./script/firebase/auth.js";
-import { getOneUser, getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts } from "./script/crudOperations/index.js";
-import { getAllPostInfo, getCurrentUserData } from './script/updatingView/index.js'
+import { getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts, createComment } from "./script/crudOperations/index.js";
+import { getAllPostInfo, getCurrentUserData, getPostData, getCommentData } from './script/updatingView/index.js'
 
 
 // login form pages
@@ -29,7 +29,12 @@ const myProfileNextBtn = document.querySelector('#my-next-page-btn');
 const myProfilePrevBtn = document.querySelector('#my-prev-page-btn')
 
 const newPostDiv = document.querySelector('#new-post-div');
-// const postDetailsDiv = document.querySelector('#post-details-div');
+
+const postDetailsDiv = document.querySelector('#post-details-div');
+const backBtn = document.querySelector('#back-btn');
+const saveBtnSm = document.querySelector('#comment-btn-sm');
+const saveBtnLg = document.querySelector('#comment-btn-lg');
+const deleteDetailedPostBtn = document.querySelector('#detail-delete-btn'); 
 
 // Post Containers
 const postContainerDiv = document.querySelector('#post-container-div')
@@ -107,9 +112,9 @@ async function handleLogin(event) {
                 postContainerDiv.innerHTML = ''
                 
                 for (const post of allPosts) {
-                    const { postContent, postId, creatorId, likes } = post;
+                    const { postContent, postId, creatorId, likes, comments } = post;
             
-                    displayPosts(user.uid, userData.userhandle, userData.displaname, postContent, postId, creatorId, 'feed', null, likes)
+                    displayPosts(user.uid, userData.userhandle, userData.displaname, postContent, postId, creatorId, 'feed', comments, likes)
                 }
             }
 
@@ -262,16 +267,21 @@ async function handleShowHomeDiv() {
     
         hideEl(myProfileDiv);
         hideEl(newPostDiv);
+        hideEl(postDetailsDiv)
         
         const { currentUser, allPosts, maxPagesNum } = await getAllPostInfo(currentFeedPage, 'feed')
     
         feedAllPageTxt.textContent = maxPagesNum;
-         postContainerDiv.innerHTML = ''
+        postContainerDiv.innerHTML = ''
+
+        // console.log(allPosts)
     
         for (const post of allPosts) {
-            const { userhandle, displayname, postContent, postId, creatorId, likes } = post;
+            const { userhandle, displayname, postContent, postId, creatorId, likes, comments } = post;
+
+            console.log('posts', post)
     
-            displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
+            displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes)
         }
 
         showEl(feedDiv); 
@@ -292,8 +302,8 @@ async function handleShowPrevFeedPage() {
             const { currentUser, allPosts } = await getAllPostInfo(currentFeedPage, 'feed'); 
     
             allPosts.forEach(post => {
-                const { creatorId, displayname, likes, postContent, postId,  userhandle } = post
-                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
+                const { creatorId, displayname, likes, postContent, postId,  userhandle, comments } = post
+                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes)
             })
         } else {
             feedNextBtn.classList.remove('next-page-btn', 'custom-btn')
@@ -320,9 +330,9 @@ async function handleShowNextFeedPage () {
             const allPosts = await fetchPosts(currentFeedPage, 'feed'); 
     
             allPosts.forEach(post => {
-                const { creatorId, displayname, likes, postContent, postId,  userhandle } = post
+                const { creatorId, displayname, likes, postContent, postId,  userhandle, comments } = post
 
-                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
+                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes)
             })
         } else {
             feedNextBtn.classList.remove('next-page-btn', 'custom-btn')
@@ -347,6 +357,7 @@ async function handleShowCreateDiv() {
     
         hideEl(feedDiv)
         hideEl(myProfileDiv)
+        hideEl(postDetailsDiv)
 
         showEl(newPostDiv)
     } catch (error) {
@@ -363,6 +374,7 @@ async function handleCreateNewPost(event) {
         event.preventDefault()
 
         const newPostBody = newPostInput.value.trim()
+        const currentUser = await getCurrentUser(); 
     
         if (!newPostBody) {
             return;
@@ -372,24 +384,25 @@ async function handleCreateNewPost(event) {
 
         await createPost(currentUser, newPostBody);
 
-        const { currentUser, allPosts, maxPagesNum } = await getAllPostInfo(currentFeedPage, 'feed')
+        const { allPosts, maxPagesNum } = await getAllPostInfo(currentFeedPage, 'feed')
 
         feedAllPageTxt.textContent = maxPagesNum; 
         postContainerDiv.innerHTML = ''; 
 
         for (const post of allPosts) {
-            const { userhandle, displayname, postContent, postId, creatorId, likes } = post; 
+            const { userhandle, displayname, postContent, postId, creatorId, likes, comments } = post; 
 
-            displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', null, likes)
+            displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes)
         }
         
         hideEl(myProfileDiv);
         hideEl(newPostDiv);
+        hideEl(postDetailsDiv); 
     
         showEl(feedDiv); 
         
     } catch (error) {
-        console.error('Error creating new psot:', error)
+        console.error('Error creating new post:', error)
     }
 }
 
@@ -419,15 +432,16 @@ async function handleShowMyProfileDiv() {
                  postContainerDiv.innerHTML = ''
             
                 for (const userPost of allUserPosts) {
-                    const { postContent, postId, likes, creatorId } = userPost;
+                    const { postContent, postId, likes, creatorId, comments } = userPost;
             
-                    displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', null, likes)
+                    displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', comments, likes)
                 }
             }
-
-            hideEl(feedDiv)
-            hideEl(newPostDiv)
         }
+        hideEl(feedDiv)
+        hideEl(newPostDiv)
+        hideEl(postDetailsDiv)
+
         showEl(myProfileDiv)
     } catch (error) {
         console.error('Error showing profile div:', error)
@@ -497,9 +511,9 @@ async function handleShowPrevMyProfilePage(){
             const paginatedPosts = await fetchPosts(currentProfilePage, 'profile', userPostArr);
     
             for (const paginatedPost of paginatedPosts) {
-                const { postContent, postId, likes, creatorId } = paginatedPost;
+                const { postContent, postId, likes, creatorId, comments } = paginatedPost;
     
-                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', null, likes)
+                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', comments, likes)
             }        
         } else {
             myProfilePrevBtn.classList.remove('next-page-btn', 'custom-btn'); 
@@ -600,13 +614,103 @@ async function handleDeletePost(event) {
     }
 }
 
-function handleShowPostDetails(event) {
-    const targetEl = event.target
-    const isCommentBtn = targetEl.classList.contains('comments-btn') || targetEl.classList.contains('comments-icon') || targetEl.classList.contains('comments-num');
+async function handleShowPostDetails(event) {
+    try {
+        const targetEl = event.target
+        const isCommentBtn = targetEl.classList.contains('comments-btn') || targetEl.classList.contains('comments-icon') || targetEl.classList.contains('comments-num');
+    
+        if (isCommentBtn) {
+            console.log('commentBtn!!!')
+            const postItem = targetEl.closest('.post')
+            const postId = postItem.getAttribute('data-post-id')
+            const posterId = postItem.getAttribute('data-poster-id'); 
+    
+            const { currentUser, userhandle, displayname, postContent, likes, comments } = await getPostData(postId, posterId); 
 
-    if (isCommentBtn) {
-        console.log('commentBtn!!!')
+            clearPostDetailDiv(); 
+            displayPostDetails(currentUser, userhandle, displayname, postContent, posterId, comments, likes, postId)
+            
+            showEl(postDetailsDiv);
+
+            hideEl(feedDiv);
+            hideEl(myProfileDiv);
+        }
+    } catch (error) {
+        console.error('Error showing post details:', error)
     }
+}
+
+async function handleAddComment(event) {
+    event.preventDefault(); 
+
+    const type = event.target.id; 
+
+    const postDetails = document.querySelector('#post-detailed')
+    const postId = postDetails.getAttribute('data-post-id');
+    const posterId = postDetails.getAttribute('data-poster-id');
+    const currentUser = await getCurrentUser()
+
+    let commentInput = type === 'comment-btn-lg' 
+        ? document.querySelector('#comment-textarea-lg')
+        : document.querySelector('#comment-textarea-sm')
+
+    // console.log(commentInput);
+
+    const commentInputValue = commentInput.value.trim(); 
+    
+    // console.log(commentInputLgValue, commentInputSmValue)
+
+    if (!commentInputValue) {
+        return; 
+    }
+
+    const { commentId } = await createComment(currentUser, commentInputValue, postId)
+
+    // console.log(await getCommentData(commentId, postId)); 
+
+    const { commentContent, commenterHandle, commenterDisplayname } = await getCommentData(commentId, postId); 
+
+    displayComments(commenterHandle, commenterDisplayname, commentContent, commentId)
+
+    commentInput.value = ''
+}
+
+async function handleDeletePostDetail() {
+    // Delete the post
+    // console.log('delete'); 
+    try {
+        const postDetails = document.querySelector('#post-detailed');
+        const postId = postDetails.getAttribute('data-post-id');
+        const posterId = postDetails.getAttribute('data-poster-id');
+        const feedAllPageTxt = document.querySelector('#feed-all-pages');
+
+        await deletePost(postId, posterId); 
+
+        const { currentUser, allPosts, maxPagesNum } = await getAllPostInfo(currentFeedPage, 'feed'); 
+        console.log(allPosts)
+
+        feedAllPageTxt.textContent = maxPagesNum; 
+        postContainerDiv.innerHTML = ''; 
+
+        for (const post of allPosts) {
+            const { userhandle, displayname, postContent, postId, creatorId, likes, comments } = post; 
+
+            displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes)
+        }
+
+        hideEl(postDetailsDiv);
+        showEl(feedDiv); 
+    } catch (error) {
+        console.error('Erorr deleting post (details view):', error)
+    }
+    
+}
+
+function handleReturnToHomeDiv () {
+    // Reload feed content
+    // Auto scroll to the where the user was?? If too difficult... unfortunate 
+    // Show HomeDiv
+    // Hide postDetailsDiv
 }
 
 async function handleLogout() {
@@ -637,9 +741,19 @@ myProfilePrevBtn.addEventListener('click', handleShowPrevMyProfilePage);
 myProfileNextBtn.addEventListener('click', handleShowNextMyProfilePage);
 logoutBtn.addEventListener('click', handleLogout);
 
+
 postContainerDiv.addEventListener('click', handleAddLike);
 userPostsContainerDiv.addEventListener('click', handleAddLike);
+// LIKE BUTTON ON THE DETAILED USER DIV 
+
+
 postContainerDiv.addEventListener('click', handleDeletePost); 
 userPostsContainerDiv.addEventListener('click', handleDeletePost); 
+// DELETE BTN ON THE DETAILED UESR DIV 
+
 postContainerDiv.addEventListener('click', handleShowPostDetails);
 userPostsContainerDiv.addEventListener('click', handleShowPostDetails);
+saveBtnLg.addEventListener('click', handleAddComment)
+saveBtnSm.addEventListener('click', handleAddComment)
+backBtn.addEventListener('click', handleShowHomeDiv)
+deleteDetailedPostBtn.addEventListener('click', handleDeletePostDetail)

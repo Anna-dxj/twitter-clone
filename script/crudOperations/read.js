@@ -26,9 +26,9 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
     
         const postWithUserDetails = await Promise.all(
             paginatedPosts.map(async (post) => {
-                const { creatorId, postContent, postId, likes } = post; 
+                const { creatorId, postContent, postId, likes, comments } = post; 
                 const { userhandle, displayname } = await getOneUser(creatorId); 
-                return { userhandle, displayname, postContent, postId, creatorId, likes }
+                return { userhandle, displayname, postContent, postId, creatorId, likes, comments }
             })
         )
         return postWithUserDetails
@@ -46,8 +46,8 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
             paginatedPosts.map(async (postId) => {
                 const postData = await getOnePost(postId); 
                 if (postData) {
-                    const { postContent, likes, postId, creatorId } = postData
-                    return { postContent, likes, postId, creatorId }
+                    const { postContent, likes, postId, creatorId, comments } = postData
+                    return { postContent, likes, postId, creatorId, comments }
                 }
             })
         )
@@ -85,23 +85,6 @@ export async function getOnePost(postId) {
     }
 }
 
-export async function getUsersByKeyword(keyword) {
-    const usersRef = ref(db, 'user'); 
-    const queryRef = query(usersRef, orderByChild('userHandle')
-    )
-
-    try {
-        const snapshot = await get(queryRef);
-        const results = []
-
-        snapshot.forEach(child => {
-            results.push(child.val())
-        })
-    } catch (error) {
-        console.error('Could not get users:', error)
-    }
-}
-
 export async function getOneUser(userId) {
     try {
         const userRef = ref(db, `user/${userId}`);
@@ -114,5 +97,24 @@ export async function getOneUser(userId) {
         }
     } catch (error) {
         console.error('Could not get user: ', error)
+    }
+}
+
+export async function getOneComment(commentId, postId) {
+    try {
+        console.log('commentId', commentId)
+        console.log('postId', postId)
+        const commentRef = ref(db, `posts/${postId}/comments/${commentId}`)
+        const snapshot = await get(commentRef); 
+
+        console.log(snapshot.val())
+
+        if (snapshot.exists()) {
+            return snapshot.val();
+        } else {
+            throw new Error('Comment data not found')
+        }
+    } catch (error) {
+        console.error('Could not get comment:', error)
     }
 }

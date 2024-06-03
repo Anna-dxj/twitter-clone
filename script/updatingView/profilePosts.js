@@ -11,6 +11,8 @@ export async function getCurrentUserData(pageNum, type) {
         const maxPagesNum = calculateMaxPage(userPostArr.length)
     
         const allUserPosts = await fetchPosts(pageNum, type, userPostArr)
+
+        console.log(allUserPosts); 
     
         const returnObj = {
             currentUser, 

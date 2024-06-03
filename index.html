@@ -176,11 +176,16 @@
                 </div>
                 <div class="row d-flex align-items-start">
                     <div id="post-detail-container" class="col-sm-12 col-md-10 offset-md-1 col-lg-7">
-                        <section class="post">
-                            <div class="poster-detail-div d-flex">
+                        <section class="post" id="post-detailed">
+                            <div class="poster-detail-div d-flex justify-content-between">
                                 <div class="m-2 p-2">
                                     <h3 class="user-handle" id="detail-user-handle"></h3>
                                     <p class="display-name" id="detail-display-name"></p>
+                                </div>
+                                <div class="m-2 px-2">
+                                    <button id="detail-delete-btn" class="hidden">
+                                        <img src="./assets/delete-icon.svg" alt="Delete" class="delete-icon" />
+                                    </button>
                                 </div>
                             </div>
                             <div class="post-body" id="detail-post-body">
@@ -204,7 +209,7 @@
                             <section id="add-comment-sm-md">
                                 <form id="add-comment-form">
                                     <label for="new-comment"></label>
-                                    <textarea class="form-control"></textarea>
+                                    <textarea id="comment-textarea-sm" class="form-control"></textarea>
                                     <button id="comment-btn-sm" class="custom-btn pink-btn">Comment</button>
                                 </form>
                             </section>
@@ -213,7 +218,7 @@
                     <section id="add-comment-lg" class="post col-lg-3">
                         <form id="add-comment-form-lg">
                             <label for="new-comment">Add a comment</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="comment-textarea-lg" class="form-control"></textarea>
                             <button id="comment-btn-lg" class="custom-btn pink-btn">Comment</button>
                         </form>
                     </section>
@@ -244,28 +249,6 @@
                                 </div>
                                 <p id="bio" class="my-4 px-4"></p>
                             </div>
-                            <!-- <form id="edit-profile" class="edit-profile-form">
-                                Note - just replace the current stuff? Like edit on todo list
-                                <div>
-                                    <div>
-                                        <label for="update-photo" class="form-label"></label>
-                                        <input type="file" accept="image/*" id="update-photo" name="update-photo" class="form-control">
-                                    </div>
-                                    <div>
-                                        <label for="update-username" class="form-label">New Username</label>
-                                        <input type="text" id="update-username"  name="update-username" value="whatever the old one was" class="form-control custom-text-input update-user-handle">
-                                    </div>
-                                    <div>
-                                        <label for="update-display-name" class="form-label">New Display Name</label>
-                                        <input type="text" id="update-display-name"  name="update-display-name" value="whatever the old one was" class="form-control custom-text-input update-display-name">
-                                    </div>
-                                    <div>
-                                        <label for="update-bio" class="form-label">New Bio</label>
-                                        <textarea id="update-bio" name="update-bio" class="form-control custom-text-input" row="4" class="update-bio">Whatever the old one was</textarea>
-                                    </div>
-                                </div>
-                                <button id="update-profile" class="custom-btn pink-btn">Save</button>
-                            </form> -->
                         </div>
                     </section>
                     <section class="col-md-6 col-sm-12">

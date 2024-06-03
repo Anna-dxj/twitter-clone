@@ -1,5 +1,5 @@
-import { getOneUser, getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts } from "../crudOperations/index.js";
-import { loginUser, createUser, getCurrentUser, logoutUser } from "../firebase/auth.js";
+import { getAllPosts, fetchPosts } from "../crudOperations/index.js";
+import { getCurrentUser } from "../firebase/auth.js";
 import { calculateMaxPage } from '../utils/index.js'
 
 export async function getAllPostInfo(pageNum, type) {
