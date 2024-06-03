@@ -21,9 +21,5 @@ export function displayComments(userHandle, displayName, commentBody, commentId,
     </div>
     <p class="py-2 mx-4">${commentBody}</p>`
 
-    // console.log(newComment);
-
-    // newComment.appendChild(commentContainer)
     commentContainer.appendChild(newComment)
-
 }

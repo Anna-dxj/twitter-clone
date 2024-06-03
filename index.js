@@ -2,7 +2,7 @@ import { showEl, hideEl, removeAt } from "./script/utils/index.js";
 import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost, clearPostDetailDiv, displayPostDetails, displayComments } from "./script/domManipulation/index.js";
 import { loginUser, createUser, getCurrentUser, logoutUser } from "./script/firebase/auth.js";
 import { getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts, createComment } from "./script/crudOperations/index.js";
-import { getAllPostInfo, getCurrentUserData, getPostData, getCommentData } from './script/updatingView/index.js'
+import { getAllPostInfo, getCurrentUserData, getOtherUserData, getPostData, getCommentData } from './script/updatingView/index.js'
 
 
 // login form pages
@@ -91,9 +91,6 @@ async function handleLogin(event) {
         }
     
         const { user, userData } = await loginUser(emailValue, passwordValue)
-
-        console.log('userhandle', userData.userhandle);
-        console.log('displayname', userData.displayname)
 
         if (userData) {
             emailInput.value = ''
@@ -278,13 +275,9 @@ async function handleShowHomeDiv() {
     
         feedAllPageTxt.textContent = maxPagesNum;
         postContainerDiv.innerHTML = ''
-
-        // console.log(allPosts)
     
         for (const post of allPosts) {
             const { userhandle, displayname, postContent, postId, creatorId, likes, comments, dateUpdated } = post;
-
-            console.log('posts', post)
     
             displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes, dateUpdated)
         }
@@ -625,7 +618,6 @@ async function handleShowPostDetails(event) {
         const isCommentBtn = targetEl.classList.contains('comments-btn') || targetEl.classList.contains('comments-icon') || targetEl.classList.contains('comments-num');
     
         if (isCommentBtn) {
-            console.log('commentBtn!!!')
             const postItem = targetEl.closest('.post')
             const postId = postItem.getAttribute('data-post-id')
             const posterId = postItem.getAttribute('data-poster-id'); 
@@ -692,7 +684,6 @@ async function handleDeletePostDetail() {
         await deletePost(postId, posterId); 
 
         const { currentUser, allPosts, maxPagesNum } = await getAllPostInfo(currentFeedPage, 'feed'); 
-        console.log(allPosts)
 
         feedAllPageTxt.textContent = maxPagesNum; 
         postContainerDiv.innerHTML = ''; 
@@ -724,6 +715,51 @@ async function handleLogout() {
     }
 }
 
+async function handleShowUserProfile(event) {
+    try {
+        const targetEl = event.target; 
+        const isUserInfoDiv = targetEl.classList.contains('user-info-div') || targetEl.classList.contains('user-handle') || targetEl.classList.contains('display-name')
+        
+        if (isUserInfoDiv) {
+            const myPostsDiv = document.querySelector('#my-posts'); 
+            const myProfileAllPageTxt = document.querySelector('#my-profile-all-pages')
+            const postItem = targetEl.closest('.post');
+            const postId = postItem.getAttribute('data-post-id');
+            const posterId = postItem.getAttribute('data-poster-id');
+            
+            const { currentUser, userhandle, displayname, bio, allUserPosts, userPostArr, maxPagesNum } = await getOtherUserData(posterId, currentProfilePage, 'profile')
+            
+            if (currentUser === posterId) {
+                handleShowMyProfileDiv(); 
+                return; 
+            }
+
+            currentProfilePage = 1; 
+
+            myPostsDiv.innerHTML = ''; 
+            postContainerDiv.innerHTML = ''
+
+            
+            myProfileAllPageTxt.textContent = maxPagesNum;
+            
+            
+            for (const userPost of allUserPosts) {
+                console.log('yay', userPost)
+                const { postContent, postId, likes, creatorId, comments, dateUpdated } = userPost;
+
+                displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', comments, likes, dateUpdated)
+            }
+            displayProfileDetails('other profile', userhandle, displayname, bio, userPostArr.length)
+
+            hideEl(feedDiv); 
+            showEl (myPostsDiv); 
+            showEl(myProfileDiv); 
+        }
+    } catch (error) {
+        console.error(`Error in displaying another user's profile`, error)
+    }
+}
+
 loginBtn.addEventListener('click', handleLogin);
 viewSignupBtn.addEventListener('click', handleViewSignup);
 signupBtn.addEventListener('click', handleSignup);
@@ -744,6 +780,8 @@ logoutBtn.addEventListener('click', handleLogout);
 postContainerDiv.addEventListener('click', handleAddLike);
 userPostsContainerDiv.addEventListener('click', handleAddLike);
 detailedPostContainer.addEventListener('click', handleAddLike)
+
+postContainerDiv.addEventListener('click', handleShowUserProfile);
 // LIKE BUTTON ON THE DETAILED USER DIV 
 
 

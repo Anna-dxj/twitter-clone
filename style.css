@@ -187,6 +187,7 @@ p {
 .user-handle {
     margin: 0.3rem 0; 
     padding: 0; 
+    transition: 0.3s all; 
 }
 
 .display-name {
@@ -342,6 +343,24 @@ p {
 
 .profile-result:active h3 {
     color: var(--dark-purple-active);
+}
+
+.post:hover .user-handle {
+    color: var(--dark-purple); 
+    /* color: blue */
+}
+
+.user-info-div:hover .user-handle {
+    color: var(--dark-purple-highlight)
+    /* color: red;  */
+}
+
+.user-info-div:active .user-handle {
+    color: var(--dark-purple-active); 
+}
+
+.user-info-div:hover {
+    cursor: pointer; 
 }
 
 #back-btn-div {

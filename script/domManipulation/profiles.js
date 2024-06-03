@@ -1,24 +1,5 @@
 import { hideEl, showEl } from "../utils/hideShowDivs.js";
 
-function displayProfileResults (userArr) {
-    const searchReturnDiv = document.querySelector('#search-return')
-
-    userArr.forEach(({userHandle, displayName, profileImg, userId}) => {
-        const newProfile = document.createElement('section');
-        newProfile.className = 'profile-result col-sm-12 col-md-6 d-flex'
-        newProfile.setAttribute('data-user-id', userId)
-
-        newProfile.innerHTML = `
-        <img alt="${displayName}'s profile picture" src=${profileImg} class="profile-pic" />
-        <div>
-            <h3 class='user-handle'>@${userHandle}</h3>
-            <p class='display-name'>${displayName}</p>
-        </div>`
-
-        searchReturnDiv.appendChild(newProfile)
-    })
-}
-
 export function displayProfileDetails (type, userHandle, displayName, bio, postsNum, profileImg) {
     const userHandleTxt = document.querySelector('#user-handle')
     const displayNameTxt = document.querySelector('#display-name');
@@ -31,14 +12,18 @@ export function displayProfileDetails (type, userHandle, displayName, bio, posts
 
     if (displayName) {
         displayNameTxt.textContent = displayName
-    } else {
+    } else if (!displayName && type === 'my profile') {
         displayNameTxt.textContent = 'Set display name!'
+    } else {
+        displayNameTxt.textContent = ''
     }
 
     if (bio) {
         bioTxt.innerHTML = bio
-    } else {
+    } else if (!bio && type === 'my profile') {
         bioTxt.innerHTML = 'Set bio and make a post!'
+    } else {
+        bioTxt.innerHTML = ''
     }
 
     if (profileImg) {

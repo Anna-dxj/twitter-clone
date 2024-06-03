@@ -19,8 +19,5 @@ export function convertDate(isoString){
 
     const formattedDate = `${day} ${month} ${year} @ ${hours}:${formatedMinutes} ${ampm}`
 
-
-    console.log(isoString); 
-
     return formattedDate;
 }

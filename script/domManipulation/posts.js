@@ -14,8 +14,6 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
         const date = convertDate(dateIsoString)
         const displaynameValue = displayName ? displayName : ''
 
-        console.log(displaynameValue); 
-
        const newPost = document.createElement('section');
 
 
@@ -47,7 +45,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
        if (currentUser === userId) {
            newPost.innerHTML = `
            <div class="poster-detail-div d-flex justify-content-between">
-                <div class='m-2 p-2'>
+                <div class='m-2 p-2 user-info-div'>
                     <h3 class="user-handle">@${userHandle}</h3>
                     <p class="display-name">${displaynameValue}</p>
                 </div>
@@ -82,7 +80,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
        } else {
             newPost.innerHTML = `
             <div class="poster-detail-div d-flex">
-                <div class='m-2 p-2'>
+                <div class='m-2 p-2 user-info-div'>
                     <h3 class="user-handle">@${userHandle}</h3>
                     <p class="display-name">${displaynameValue}</p>
                 </div>
@@ -90,20 +88,26 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
             <div class="post-body">
                 <p>${content}</p>
             </div>
-            <div class="d-flex btn-divs justify-content-end">
-                <div>
-                    <button class="likes-btn btn d-flex align-items-center">
-                        <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
-                        <p class="likes-num">${likesNum}</p>
-                    </button>
+            <div class="d-flex btn-divs justify-content-between align-items-center">
+                <div class="px-2 m-2">
+                    <p class="date">${date}</p>
                 </div>
-                <div>
-                    <button class="comments-btn btn d-flex align-items-center">
-                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                        <p class="comments-num">${commentNum}</p>
-                    </button>
+                <div class="d-flex btn-divs justify-content-end">
+                    <div>
+                        <button class="likes-btn btn d-flex align-items-center">
+                            <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
+                            <p class="likes-num">${likesNum}</p>
+                        </button>
+                    </div>
+                    <div>
+                        <button class="comments-btn btn d-flex align-items-center">
+                            <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
+                            <p class="comments-num">${commentNum}</p>
+                        </button>
+                    </div>
                 </div>
             </div>`
+
        }
 
         if (viewType === 'feed') {
@@ -201,9 +205,7 @@ export async function displayPostDetails(currentUser, userHandle, displayName, p
     
                 displayComments(post.userhandle, post.displayname, commentContent, commentId, datePosted)
             }
-        } else {
-            console.log('no comments')
-        }
+        } 
     } catch (error) {
         console.error('Erorr in displaying Comments:', error)
     }

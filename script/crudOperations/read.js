@@ -105,12 +105,8 @@ export async function getOneUser(userId) {
 
 export async function getOneComment(commentId, postId) {
     try {
-        console.log('commentId', commentId)
-        console.log('postId', postId)
         const commentRef = ref(db, `posts/${postId}/comments/${commentId}`)
         const snapshot = await get(commentRef); 
-
-        console.log(snapshot.val())
 
         if (snapshot.exists()) {
             return snapshot.val();
