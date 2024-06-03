@@ -1,8 +1,8 @@
 import { displayComments } from "./comments.js";
-import { showEl, hideEl } from "../utils/index.js";
+import { showEl, hideEl, convertDate } from "../utils/index.js";
 import { getOneUser } from "../crudOperations/index.js";
 
-export function displayPosts(currentUser, userHandle, displayName, content, postId, userId, viewType, comment, likes) {
+export function displayPosts(currentUser, userHandle, displayName, content, postId, userId, viewType, comment, likes, dateIsoString) {
        const feedPostContainer = document.querySelector('#post-container-div')
        const userPostContainer = document.querySelector('#user-posts');
        const myPostsContainer = document.querySelector('#my-posts')
@@ -10,6 +10,11 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
        let commentNum = 0; 
        let likesNum = 0;
        let likesImgSrc = null; 
+    
+        const date = convertDate(dateIsoString)
+        const displaynameValue = displayName ? displayName : ''
+
+        console.log(displaynameValue); 
 
        const newPost = document.createElement('section');
 
@@ -23,10 +28,8 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
        newPost.setAttribute('data-post-id', postId);
        newPost.setAttribute('data-poster-id', userId);
 
-       console.log(comment); 
 
        if (comment) {
-        console.log('yes')
         commentNum = Object.keys(comment).length
        }
 
@@ -46,7 +49,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
            <div class="poster-detail-div d-flex justify-content-between">
                 <div class='m-2 p-2'>
                     <h3 class="user-handle">@${userHandle}</h3>
-                    <p class="display-name">${displayName}</p>
+                    <p class="display-name">${displaynameValue}</p>
                 </div>
                 <div class="m-2 px-2">
                     <button class="delete-btn btn d-flex align-items-center">
@@ -57,18 +60,23 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
             <div class="post-body">
                 <p>${content}</p>
             </div>
-            <div class="d-flex btn-divs justify-content-end">
-                <div>
-                    <button class="likes-btn btn d-flex align-items-center">
-                        <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
-                        <p class="likes-num">${likesNum}</p>
-                    </button>
+            <div class="d-flex btn-divs justify-content-between align-items-center">
+                <div class="px-2 m-2">
+                    <p class="date">${date}</p>
                 </div>
-                <div>
-                    <button class="comments-btn btn d-flex align-items-center">
-                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                        <p class="comments-num">${commentNum}</p>
-                    </button>
+                <div class="d-flex btn-divs justify-content-end">
+                    <div>
+                        <button class="likes-btn btn d-flex align-items-center">
+                            <img alt="Likes" src="${likesImgSrc}" class="likes-icon"/>
+                            <p class="likes-num">${likesNum}</p>
+                        </button>
+                    </div>
+                    <div>
+                        <button class="comments-btn btn d-flex align-items-center">
+                            <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
+                            <p class="comments-num">${commentNum}</p>
+                        </button>
+                    </div>
                 </div>
             </div>`
        } else {
@@ -76,7 +84,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
             <div class="poster-detail-div d-flex">
                 <div class='m-2 p-2'>
                     <h3 class="user-handle">@${userHandle}</h3>
-                    <p class="display-name">${displayName}</p>
+                    <p class="display-name">${displaynameValue}</p>
                 </div>
             </div>
             <div class="post-body">
@@ -119,7 +127,7 @@ export function removePost(target) {
     parentNode.removeChild(target); 
 } 
 
-export async function displayPostDetails(currentUser, userHandle, displayName, postContent, posterId, comment, likes, postId) {
+export async function displayPostDetails(currentUser, userHandle, displayName, postContent, posterId, comment, likes, postId, dateIsoString) {
     const postDetailContainer = document.querySelector('#post-detailed')
     const userHandleTxt = document.querySelector('#detail-user-handle')
     const displayNameTxt = document.querySelector('#detail-display-name')
@@ -127,12 +135,16 @@ export async function displayPostDetails(currentUser, userHandle, displayName, p
     const likesIcon = document.querySelector('#detail-likes-img')
     const likesNumTxt = document.querySelector('#detail-likes-num');
     const commentsNumTxt = document.querySelector('#detail-comments-num');
-    const commentDiv = document.querySelector('#comment-section')
-    const deleteBtn = document.querySelector('#detail-delete-btn')
+    const dateTxt = document.querySelector('#date-detail');
+    const commentDiv = document.querySelector('#comment-section');
+    const deleteBtn = document.querySelector('#detail-delete-btn');
 
     let commentNum = 0; 
     let likesNum = 0;
     let likesImgSrc = null;
+    const date = convertDate(dateIsoString); 
+
+    const displaynameValue = displayName ?  displayName : ''
 
     // if currentUser = psoterId 
     // unhide the delte btn 
@@ -153,7 +165,6 @@ export async function displayPostDetails(currentUser, userHandle, displayName, p
 
 
     if (comment) {
-        console.log('yes')
         commentNum = Object.keys(comment).length
         showEl(commentDiv)
     } else {
@@ -173,23 +184,22 @@ export async function displayPostDetails(currentUser, userHandle, displayName, p
 
     likesIcon.src = likesImgSrc
     userHandleTxt.textContent = `@${userHandle}`
-    displayNameTxt.textContent = displayName
+    displayNameTxt.textContent = displaynameValue
     postBodyTxt.innerHTML = postContent
     likesNumTxt.textContent = likesNum 
     commentsNumTxt.textContent = commentNum
+    dateTxt.textContent = date; 
 
     const commentIdArr = Object.keys(comment)
 
     try {
         if (commentIdArr.length) {
-            console.log(commentIdArr.length); 
             for (const commentItem of commentIdArr) {
-                console.log(comment[commentItem])
-                const { commentContent, commentId, commenterId } = comment[commentItem]
+                const { commentContent, commentId, commenterId, datePosted } = comment[commentItem]
                 
                 const post = await getOneUser(commenterId)
     
-                displayComments(post.userhandle, post.displayname, commentContent, commentId)
+                displayComments(post.userhandle, post.displayname, commentContent, commentId, datePosted)
             }
         } else {
             console.log('no comments')

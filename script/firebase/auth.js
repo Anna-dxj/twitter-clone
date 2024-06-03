@@ -35,6 +35,9 @@ export async function createUser(email, password, userhandle) {
         })
 
         currentUser = newUser; 
+
+        console.log('created:', newUser);
+        console.log('currentUser: ', currentUser); 
         return newUser; 
     } catch (error) {
         throw error

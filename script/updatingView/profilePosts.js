@@ -5,7 +5,9 @@ import { calculateMaxPage } from '../utils/index.js'
 export async function getCurrentUserData(pageNum, type) {
     try {
         const currentUser = await getCurrentUser();
-        const { userhandle, displayname, bio, posts } = await getOneUser(currentUser); 
+        console.log('profilePosts.js currentUser', currentUser); 
+        console.log('one user:', await getOneUser(currentUser))
+        const { userhandle, displayname, bio, posts = {} } = await getOneUser(currentUser); 
     
         const userPostArr = Object.keys(posts).reverse(); 
         const maxPagesNum = calculateMaxPage(userPostArr.length)
@@ -25,7 +27,7 @@ export async function getCurrentUserData(pageNum, type) {
             maxPagesNum, 
         }
 
-        console.log('userPostArr:', userPostArr)
+        // console.log('userPostArr:', userPostArr)
     
         return returnObj
     } catch (error) {

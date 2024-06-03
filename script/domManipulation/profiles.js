@@ -38,7 +38,7 @@ export function displayProfileDetails (type, userHandle, displayName, bio, posts
     if (bio) {
         bioTxt.innerHTML = bio
     } else {
-        bioTxt.innerHTML = 'Set bio and profile image!'
+        bioTxt.innerHTML = 'Set bio and make a post!'
     }
 
     if (profileImg) {

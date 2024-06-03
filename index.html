@@ -109,8 +109,8 @@
                 <div class="post new-post-form-div">
                     <div class="d-flex align-items-center">
                         <div>
-                            <h3 class="user-handle" id="new-post-user-handle">@posting user</h3>
-                            <p class="display-name" id="new-post-display-name">Display Name</p>
+                            <h3 class="user-handle" id="new-post-user-handle"></h3>
+                            <p class="display-name" id="new-post-display-name"></p>
                         </div>
                     </div>
                     <form id="new-post-form" class="d-flex flex-column justify-content-center align-items-center">
@@ -124,50 +124,6 @@
                     </form>
                 </div>
             </section>
-            <!-- <section id="search-div" class="hidden">
-                <form id="search-form" class="d-flex align-items-center justify-content-center">
-                    <label for="search-user-input"></label>
-                    <input id="search-user-input" type="text" placeholder="Search for a user" name="search-user-input" class="form-control">
-                    <button id="search-user-btn" class="custom-form-btn" type="button">Search</button>
-                </form>
-                <section id="search-results" class="row">
-                    <div class="col-sm-12 col-md-10 offset-md-1">
-                        <div id="empty-search" class="empty-search hidden">
-                            <p>No user exists!</p>
-                        </div>
-                        <div id="search-return" class="search-results row">
-                            <section class="profile-result col-sm-12 col-md-6 d-flex">
-                                <img alt="asdf" class="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user handler</h3>
-                                    <p class="display-name">Display name</p>
-                                </div>
-                            </section>
-                            <section class="profile-result col-sm-12 col-md-6 d-flex">
-                                <img alt="asdf" class="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user handler</h3>
-                                    <p class="display-name">Display name</p>
-                                </div>
-                            </section>
-                            <section class="profile-result col-sm-12 col-md-6 d-flex">
-                                <img alt="asdf" class="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user handler</h3>
-                                    <p class="display-name">Display name</p>
-                                </div>
-                            </section>
-                            <section class="profile-result col-sm-12 col-md-6 d-flex">
-                                <img alt="asdf" class="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user handler</h3>
-                                    <p class="display-name">Display name</p>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </section>
-            </section> -->
             <section id="post-details-div" class="hidden">
                 <div id="back-btn-div">
                     <button class="btn" id="back-btn">
@@ -190,18 +146,23 @@
                             </div>
                             <div class="post-body" id="detail-post-body">
                             </div>
-                            <div class="d-flex btn-divs justify-content-end">
-                                <div>
-                                    <button class="likes-btn btn d-flex align-items-center">
-                                        <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon" id="detail-likes-img"/>
-                                        <p class="likes-num" id="detail-likes-num"></p>
-                                    </button>
+                            <div class="d-flex btn-divs justify-content-between align-items-center">
+                                <div class="px-2 m-2">
+                                    <p class="date" id="date-detail"></p>
                                 </div>
-                                <div>
-                                    <button class="comments-btn btn d-flex align-items-center">
-                                        <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                                        <p class="comments-num" id="detail-comments-num"></p>
-                                    </button>
+                                <div class="d-flex btn-divs justify-content-end">
+                                    <div>
+                                        <button class="likes-btn btn d-flex align-items-center">
+                                            <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon" id="detail-likes-img"/>
+                                            <p class="likes-num" id="detail-likes-num"></p>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button class="comments-btn btn d-flex align-items-center">
+                                            <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
+                                            <p class="comments-num" id="detail-comments-num"></p>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <section id="comment-section" class="">
@@ -242,10 +203,6 @@
                                         <p>Posts</p>
                                         <p id="posts"></p>
                                     </div>
-                                </div>
-                                <div>
-                                    <label for="update-photo"></label>
-                                    <input type="file" accept="image/" id="update-photo" name="update-photo" class="form-control hidden" />
                                 </div>
                                 <p id="bio" class="my-4 px-4"></p>
                             </div>

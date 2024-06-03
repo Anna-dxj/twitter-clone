@@ -5,7 +5,7 @@ import { calculateMaxPage } from '../utils/index.js'
 export async function getPostData(postId, posterId) {
     try {
         const currentUser = await getCurrentUser();
-        const { postContent, likes, comments } = await getOnePost(postId); 
+        const { postContent, likes, comments, dateUpdated } = await getOnePost(postId); 
         const { userhandle, displayname } = await getOneUser(posterId); 
     
         const returnObj = {
@@ -15,6 +15,7 @@ export async function getPostData(postId, posterId) {
             comments, 
             userhandle, 
             displayname, 
+            dateUpdated,
         }
 
         return returnObj

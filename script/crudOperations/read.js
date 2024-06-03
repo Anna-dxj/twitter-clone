@@ -1,5 +1,5 @@
 import { ref, get, query, orderByChild, startAt, endAt } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js';
-import { showEl } from '../utils/index.js';
+import { showEl, hideEl } from '../utils/index.js';
 import { db } from '../firebase/db.js'
 
 export async function fetchPosts(pageNum, type, postIdsArr) {
@@ -26,18 +26,21 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
     
         const postWithUserDetails = await Promise.all(
             paginatedPosts.map(async (post) => {
-                const { creatorId, postContent, postId, likes, comments } = post; 
+                const { creatorId, postContent, postId, likes, comments, dateUpdated } = post; 
                 const { userhandle, displayname } = await getOneUser(creatorId); 
-                return { userhandle, displayname, postContent, postId, creatorId, likes, comments }
+                return { userhandle, displayname, postContent, postId, creatorId, likes, comments, dateUpdated }
             })
         )
         return postWithUserDetails
     } else {
         if (postIdsArr.length > 10) {
             showEl(myProfileNav)
+            myProfileNav.classList.add('my-page-navigator')
             myCurrentPageTxt.textContent = pageNum;
         } else {
             hideEl(myProfileNav)
+            myProfileNav.classList.remove('my-page-navigator')
+
         }
 
         const paginatedPosts = postIdsArr.slice(start, end)
@@ -46,8 +49,8 @@ export async function fetchPosts(pageNum, type, postIdsArr) {
             paginatedPosts.map(async (postId) => {
                 const postData = await getOnePost(postId); 
                 if (postData) {
-                    const { postContent, likes, postId, creatorId, comments } = postData
-                    return { postContent, likes, postId, creatorId, comments }
+                    const { postContent, likes, postId, creatorId, comments, dateUpdated } = postData
+                    return { postContent, likes, postId, creatorId, comments, dateUpdated }
                 }
             })
         )

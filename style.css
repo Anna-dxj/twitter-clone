@@ -222,6 +222,11 @@ p {
     color: var(--secondary-text); 
 }
 
+.date {
+    color: var(--secondary-text); 
+    font-style: italic;
+}
+
 .feed-page-navigator {
     display: flex;
     align-items: center;
@@ -411,7 +416,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
     justify-content: center;
 }
 
-#my-page-navigator {
+.my-page-navigator {
     display: flex;
     justify-content: center;
     padding-top: 1rem; 
