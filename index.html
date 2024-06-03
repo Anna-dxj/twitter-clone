@@ -168,7 +168,7 @@
                     </div>
                 </section>
             </section> -->
-            <!-- <section id="post-details-div" class="hidden">
+            <section id="post-details-div" class="hidden">
                 <div id="back-btn-div">
                     <button class="btn" id="back-btn">
                         <img src="./assets/back-arrow-icon.svg" alt="Go Back" class="icon-img" />
@@ -178,50 +178,28 @@
                     <div id="post-detail-container" class="col-sm-12 col-md-10 offset-md-1 col-lg-7">
                         <section class="post">
                             <div class="poster-detail-div d-flex">
-                                <img alt="image" class="profile-pic" id="profile-pic"/>
-                                <div>
-                                    <h3 class="user-handle">@user</h3>
-                                    <p class="display-name">Display name</p>
+                                <div class="m-2 p-2">
+                                    <h3 class="user-handle" id="detail-user-handle"></h3>
+                                    <p class="display-name" id="detail-display-name"></p>
                                 </div>
                             </div>
-                            <div class="post-body" id="post-body">
-                                <p>POST BODY testing test test test test test test test test test test test test test test test test</p>
+                            <div class="post-body" id="detail-post-body">
                             </div>
                             <div class="d-flex btn-divs justify-content-end">
                                 <div>
                                     <button class="likes-btn btn d-flex align-items-center">
-                                        <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon"/>
-                                        <p class="likes-num" id="likes-num">##</p>
+                                        <img alt="Likes" src="./assets/heart-empty-icon.svg" class="likes-icon" id="detail-likes-img"/>
+                                        <p class="likes-num" id="detail-likes-num"></p>
                                     </button>
                                 </div>
                                 <div>
                                     <button class="comments-btn btn d-flex align-items-center">
                                         <img alt="Comments" src="./assets/comment-icon.svg" class="comments-icon"/>
-                                        <p class="comments-num" id="comments-num">##</p>
+                                        <p class="comments-num" id="detail-comments-num"></p>
                                     </button>
                                 </div>
                             </div>
-                            <section id="comment-section">
-                                <section class="comment" data-comment-id="comment-id">
-                                    <div>
-                                        <img />
-                                        <div>
-                                            <h4 class="user-handle">@commenter</h4>
-                                            <p class="display-name">(<span>display-name</span>)</p>
-                                        </div>
-                                    </div>
-                                    <p>comment</p>
-                                </section>
-                                <section class="comment" data-comment-id="comment-id">
-                                    <div>
-                                        <img />
-                                        <div div>
-                                            <h4 class="user-handle">@commenter</h4>
-                                            <p class="display-name">(<span>display-name</span>)</p>
-                                        </div>
-                                    </div>
-                                    <p>comment</p>
-                                </section>
+                            <section id="comment-section" class="">
                             </section>
                             <section id="add-comment-sm-md">
                                 <form id="add-comment-form">
@@ -240,7 +218,7 @@
                         </form>
                     </section>
                 </div>
-            </section> -->
+            </section>
             <section id="my-profile-div" class="hidden">
                 <div class="row">
                     <section id="my-profile-details" class="col-sm-12 col-md-6">

@@ -1,4 +1,5 @@
 import { displayComments } from "./comments.js";
+import { showEl, hideEl } from "../utils/index.js";
 
 export function displayPosts(currentUser, userHandle, displayName, content, postId, userId, viewType, comment, likes) {
        const feedPostContainer = document.querySelector('#post-container-div')
@@ -26,13 +27,13 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
        }
 
        if (likes) {
-        likesNum = Object.keys(likes).length
-        if (Object.keys(likes).includes(currentUser)) {
-         likesImgSrc = './assets/heart-fill-icon.svg'
+            likesNum = Object.keys(likes).length
+            if (Object.keys(likes).includes(currentUser)) {
+                likesImgSrc = './assets/heart-fill-icon.svg'
+            } else {
+                likesImgSrc = './assets/heart-empty-icon.svg'
+            }
         } else {
-         likesImgSrc = './assets/heart-empty-icon.svg'
-        }
-       } else {
         likesImgSrc = './assets/heart-empty-icon.svg'
        }
 
@@ -114,21 +115,49 @@ export function removePost(target) {
     parentNode.removeChild(target); 
 } 
 
-function displayPostDetails(userHandle, displayName, commentNum, likeNum, content, commentArr) {
-    const userHandleTxt = document.querySelector('#user-handle')
-    const displayNameTxt = document.querySelector('#display-name')
-    const postBodyTxt = document.querySelector('#post-body')
-    const likesNum = document.querySelector('#likes-num');
-    const commentsNum = document.querySelector('#comments-num');
+export function displayPostDetails(currentUser, userHandle, displayName, postContent, posterId, comment, likes) {
+    const userHandleTxt = document.querySelector('#detail-user-handle')
+    const displayNameTxt = document.querySelector('#detail-display-name')
+    const postBodyTxt = document.querySelector('#detail-post-body');
+    const likesIcon = document.querySelector('#detail-likes-img')
+    const likesNumTxt = document.querySelector('#detail-likes-num');
+    const commentsNumTxt = document.querySelector('#detail-comments-num');
+    const commentDiv = document.querySelector('#comment-section')
 
+    let commentNum = 0; 
+    let likesNum = 0;
+    let likesImgSrc = null;
+
+    // if currentUser = psoterId 
+    // unhide the delte btn 
+    // THEN ADD EVENT LISTENER TO DELETE BTN! 
+    if (comment) {
+        commentNum = comment.length
+        showEl(commentDiv)
+    } else {
+        hideEl(commentDiv)
+    }
+
+    if (likes) {
+        likesNum = Object.keys(likes).length
+        if (Object.keys(likes).includes(currentUser)) {
+            likesImgSrc = './assets/heart-fill-icon.svg'
+        } else {
+            likesImgSrc = './assets/heart-empty-icon.svg'
+        }
+    } else {
+        likesImgSrc = './assets/heart-empty-icon.svg'
+    }
+    console.log('userhandle', userHandleTxt)
+    likesIcon.src = likesImgSrc
     userHandleTxt.textContent = `@${userHandle}`
     displayNameTxt.textContent = displayName
-    postBodyTxt.innerHTML = content
-    likesNum = likeNum 
-    commentsNum = commentNum
+    postBodyTxt.innerHTML = postContent
+    likesNumTxt.textContent = likesNum 
+    commentsNumTxt.textContent = commentNum
 
-    commentArr.forEach(({commentHandle, commentName, commentBody}) => {
-        displayComments(commentHandle, commentName, commentBody)
-    })
+    // Object.keys(comment).forEach(({commenterId, commentBody}) => {
+    //     displayComments(commentHandle, commentName, commentBody)
+    // })
 
 }

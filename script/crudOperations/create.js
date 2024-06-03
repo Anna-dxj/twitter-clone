@@ -11,10 +11,10 @@ export async function createPost(currentUserId, postContent) {
         likes: {},
     }
 
-    const returnObj = {
-        postId: postId, 
-        postContent: postData.postContent
-    }
+    // const returnObj = {
+    //     postId: postId, 
+    //     postContent: postData.postContent
+    // }
 
     const updateDatabase = {}
     updateDatabase[`posts/${postId}`] = postData;
@@ -22,7 +22,7 @@ export async function createPost(currentUserId, postContent) {
 
     try {
         await update(ref(db), updateDatabase); 
-        return returnObj
+        // return returnObj
     } catch (error) {
         console.error('Post creation error: ', error)
     }
