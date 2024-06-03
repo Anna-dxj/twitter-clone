@@ -1,4 +1,4 @@
-import { getOneUser, fetchPosts } from "../crudOperations/index.js";
+import { getOneUser, fetchPosts, getAllUsers } from "../crudOperations/index.js";
 import { getCurrentUser } from "../firebase/auth.js";
 import { calculateMaxPage } from '../utils/index.js'
 
@@ -60,4 +60,20 @@ export async function getOtherUserData(otherUserId, pageNum, type) {
         console.error('Problem getting userData:', error)
     }
     
+}
+
+export async function getAllUserhandles() {
+    try {
+        const userIdArr = await getAllUsers(); 
+        const userhandleArr = []
+
+        for (const userId of userIdArr) {
+            const { userhandle } = await getOneUser(userId)
+            userhandleArr.push(userhandle); 
+        }
+
+        return userhandleArr
+    } catch (error) {
+        console.error('Problem in fetching userhandles:', error)
+    }
 }

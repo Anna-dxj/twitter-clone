@@ -4,7 +4,7 @@ import { ref, set, update, get } from 'https://www.gstatic.com/firebasejs/10.12.
 export async function updateUserInfo(userId, userhandle, displayname, bio) {
     try {
         const userRef = ref(db, `user/${userId}`);
-        await set(userRef, {
+        await update(userRef, {
             userhandle: userhandle, 
             displayname: displayname, 
             bio: bio, 

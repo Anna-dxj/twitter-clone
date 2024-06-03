@@ -117,3 +117,35 @@ export async function getOneComment(commentId, postId) {
         console.error('Could not get comment:', error)
     }
 }
+
+export async function getAllUsers() {
+    try {
+        const userRef = ref(db, 'user');
+
+        if (userRef) {
+            const snapshot = await get(userRef);
+
+            if (snapshot.exists()) {
+                const users = snapshot.val(); 
+                const usersArr = Object.keys(users);
+
+                return usersArr; 
+            }
+        }
+
+            // const postRef = ref(db, 'posts');
+    // if (postRef) {
+    //     const snapshot = await get(postRef);
+    
+    //     if (snapshot.exists()) {
+    //         const posts = snapshot.val();
+    //         const postsArr = Object.keys(posts).map(key => ({ id: key, ...posts[key] }));
+    //         return postsArr; 
+    //     } else {
+    //         return {}; 
+    //     }
+    // }
+    } catch (error) {
+        console.error('Error getting all users:', error);    
+    }
+}

@@ -1,4 +1,5 @@
-import { hideEl, showEl } from "../utils/hideShowDivs.js";
+import { hideEl, showEl } from "../utils/index.js";
+import { getCurrentUserData } from "../updatingView/index.js";
 
 export function displayProfileDetails (type, userHandle, displayName, bio, postsNum, profileImg) {
     const userHandleTxt = document.querySelector('#user-handle')
@@ -108,4 +109,24 @@ export function convertBack (value, oldItem, targetItem, parentItem, type) {
     }
 
     parentItem.replaceChild(newEl, oldItem)
+}
+
+export async function unsavedProfileFormRevert() {
+    const userHandleInput = document.querySelector('#user-handle');
+    const displayNameInput = document.querySelector('#display-name');
+    const bioInput = document.querySelector('#bio');
+    const usernameWarning = document.querySelector('#username-warning-profile'); 
+    const saveProfileBtn = document.querySelector('#save-profile');
+    const editProfileBtn = document.querySelector('#edit-profile');
+    
+
+    const { userhandle, displayname, bio } = await getCurrentUserData(); 
+
+    hideEl(usernameWarning); 
+    hideEl(saveProfileBtn); 
+    showEl(editProfileBtn)
+
+    convertBack(userhandle, userHandleInput, 'h2', userHandleInput.parentNode, 'user handle')
+    convertBack(displayname, displayNameInput, 'p', displayNameInput.parentNode, 'display name')
+    convertBack(bio, bioInput, 'p', bioInput.parentNode, 'bio')
 }

@@ -1,8 +1,8 @@
 import { showEl, hideEl, removeAt } from "./script/utils/index.js";
-import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost, clearPostDetailDiv, displayPostDetails, displayComments } from "./script/domManipulation/index.js";
+import { convertBack, convertToInput, convertToTextarea, displayProfileDetails, displayPosts, addLikeImg, removeLikeImg, removePost, clearPostDetailDiv, displayPostDetails, displayComments, unsavedProfileFormRevert } from "./script/domManipulation/index.js";
 import { loginUser, createUser, getCurrentUser, logoutUser } from "./script/firebase/auth.js";
 import { getOnePost, getAllPosts, updateUserInfo, createPost, addLikes, removeLikes, deletePost, fetchPosts, createComment } from "./script/crudOperations/index.js";
-import { getAllPostInfo, getCurrentUserData, getOtherUserData, getPostData, getCommentData } from './script/updatingView/index.js'
+import { getAllPostInfo, getCurrentUserData, getOtherUserData, getPostData, getCommentData, getAllUserhandles } from './script/updatingView/index.js'
 
 
 // login form pages
@@ -59,6 +59,7 @@ const saveProfileBtn = document.querySelector('#save-profile');
 
 let currentFeedPage = 1; 
 let currentProfilePage = 1; 
+let editingProfile = false;
 
 async function handleLogin(event) {
     const emailInput = document.querySelector('#login-email');
@@ -91,6 +92,7 @@ async function handleLogin(event) {
         }
     
         const { user, userData } = await loginUser(emailValue, passwordValue)
+        console.log('userdata', userData)
 
         if (userData) {
             emailInput.value = ''
@@ -146,7 +148,10 @@ async function handleSignup(event) {
     const usernameInput = document.querySelector('#create-username')
     const emptyFormWarning = document.querySelector('#empty-signup-warning')
     const mismatchPasswordWarning = document.querySelector('#passwords-mismatch-warning')
-    const passwordLengthWarning = document.querySelector('#password-length-warning')
+    const passwordLengthWarning = document.querySelector('#password-length-warning');
+    const emailWarning = document.querySelector('#email-warning');
+    const usernameConflictWarning = document.querySelector('#username-warning')
+    const myPostsDiv = document.querySelector('#my-posts')
 
     const emailValue = emailInput.value.trim()
     const passwordValue = passwordInput.value.trim()
@@ -208,6 +213,20 @@ async function handleSignup(event) {
 
             hideEl(mismatchPasswordWarning)
         }
+
+        const existingUserhandles = await getAllUserhandles(); 
+
+        for (const existingUserhandle of existingUserhandles) {
+            if (existingUserhandle === usernameValue) {
+                showEl(usernameConflictWarning);
+                usernameInput.classList.add('custom-text-warning-input'); 
+                usernameInput.value = ''
+                return;
+            } else {
+                showEl(usernameConflictWarning);
+                usernameInput.classList.remove('custom-text-warning-input'); 
+            }
+        }
     
         await createUser(emailValue, passwordValue, usernameValue);
         
@@ -217,13 +236,25 @@ async function handleSignup(event) {
         usernameInput.classList.remove('custom-text-warning-input')
 
         displayProfileDetails('my profile', usernameValue)
-        console.log(usernameValue); 
     
+        myPostsDiv.innerHTML = ''; 
+
         hideEl(authForms);
+        hideEl(emailWarning); 
         showEl(myProfileDiv);
         showEl(authSections);
     } catch (error) {
         console.error('Error signing up:', error)
+
+        if (error === 'auth/email-already-in-use') {
+            console.log('errorasdfsdaf')
+            showEl(emailWarning); 
+            emailInput.classList.add('custom-text-warning-input'); 
+
+            emailInput.value = ''
+            passwordInput.value = ''
+            confirmPasswordInput.value = ''
+        }
     }
 }
 
@@ -263,7 +294,7 @@ function handleViewSignup() {
 
 async function handleShowHomeDiv() {
     try {
-        const feedAllPageTxt = document.querySelector('#feed-all-pages')
+        const feedAllPageTxt = document.querySelector('#feed-all-pages');
 
         currentFeedPage = 1
     
@@ -281,6 +312,7 @@ async function handleShowHomeDiv() {
     
             displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'feed', comments, likes, dateUpdated)
         }
+
 
         showEl(feedDiv); 
     } catch (error) {
@@ -406,7 +438,12 @@ async function handleCreateNewPost(event) {
 
 async function handleShowMyProfileDiv() {
     try {
-        const myPostsDiv = document.querySelector('#my-posts')
+        const myPostsDiv = document.querySelector('#my-posts');
+
+        if (editingProfile) {
+            await unsavedProfileFormRevert(); 
+        }
+
 
         const { currentUser, userhandle, displayname, bio, allUserPosts, userPostArr, maxPagesNum } = await getCurrentUserData(currentProfilePage, 'profile')
 
@@ -455,6 +492,8 @@ function handleEditProfile(event) {
     
     event.preventDefault()
 
+    editingProfile = true; 
+
     hideEl(editProfileBtn)
     showEl(saveProfileBtn)
 
@@ -473,6 +512,7 @@ async function handleSaveProfile(event) {
         const userHandleInput = document.querySelector('#user-handle');
         const displayNameInput = document.querySelector('#display-name'); 
         const bioInput = document.querySelector('#bio');
+        const usernameWarning = document.querySelector('#username-warning-profile')
 
         event.preventDefault()
         
@@ -480,9 +520,28 @@ async function handleSaveProfile(event) {
         const displayNameValue = displayNameInput.value.trim(); 
         const bioValue = bioInput.value.trim();
 
-        const currentUser = await getCurrentUser();
+        // const currentUser = await getCurrentUser();
+
+        const { currentUser, userhandle } = await getCurrentUserData()
+
+        const existingUserhandles = await getAllUserhandles();
+
+        for (const existingUserhandle of existingUserhandles) {
+            if (existingUserhandle === userhandleValue && existingUserhandle !== userhandle) {
+                console.log('there a problem!')
+                userHandleInput.value = userhandle
+                userHandleInput.classList.add('custom-text-warning-input')
+                showEl(usernameWarning)
+                return; 
+            } else {
+                userHandleInput.classList.remove('custom-text-warning-input')
+                hideEl(usernameWarning)
+            }
+        }
 
         await updateUserInfo(currentUser, userhandleValue, displayNameValue, bioValue) 
+
+        editingProfile = false; 
 
         hideEl(saveProfileBtn)
         showEl(editProfileBtn)
