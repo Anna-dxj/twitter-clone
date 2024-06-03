@@ -44,7 +44,6 @@ const userPostsContainerDiv = document.querySelector('#my-posts')
 // Nav btns
 const homeBtn = document.querySelector('#home-btn');
 const createBtn = document.querySelector('#create-btn');
-// const searchBtn = document.querySelector('#search-btn');
 const myProfileBtn = document.querySelector('#profile-btn');
 const logoutBtn = document.querySelector('#logout-btn')
 
@@ -92,7 +91,6 @@ async function handleLogin(event) {
         }
     
         const { user, userData } = await loginUser(emailValue, passwordValue)
-        console.log('userdata', userData)
 
         if (userData) {
             emailInput.value = ''
@@ -247,7 +245,6 @@ async function handleSignup(event) {
         console.error('Error signing up:', error)
 
         if (error === 'auth/email-already-in-use') {
-            console.log('errorasdfsdaf')
             showEl(emailWarning); 
             emailInput.classList.add('custom-text-warning-input'); 
 
@@ -520,15 +517,12 @@ async function handleSaveProfile(event) {
         const displayNameValue = displayNameInput.value.trim(); 
         const bioValue = bioInput.value.trim();
 
-        // const currentUser = await getCurrentUser();
-
         const { currentUser, userhandle } = await getCurrentUserData()
 
         const existingUserhandles = await getAllUserhandles();
 
         for (const existingUserhandle of existingUserhandles) {
             if (existingUserhandle === userhandleValue && existingUserhandle !== userhandle) {
-                console.log('there a problem!')
                 userHandleInput.value = userhandle
                 userHandleInput.classList.add('custom-text-warning-input')
                 showEl(usernameWarning)
@@ -697,43 +691,39 @@ async function handleShowPostDetails(event) {
 }
 
 async function handleAddComment(event) {
-    event.preventDefault(); 
-
-    const type = event.target.id; 
-
-    const postDetails = document.querySelector('#post-detailed')
-    const postId = postDetails.getAttribute('data-post-id');
-    const posterId = postDetails.getAttribute('data-poster-id');
-    const currentUser = await getCurrentUser()
-
-    let commentInput = type === 'comment-btn-lg' 
-        ? document.querySelector('#comment-textarea-lg')
-        : document.querySelector('#comment-textarea-sm')
-
-    // console.log(commentInput);
-
-    const commentInputValue = commentInput.value.trim(); 
+    try {
+        event.preventDefault(); 
     
-    // console.log(commentInputLgValue, commentInputSmValue)
-
-    if (!commentInputValue) {
-        return; 
+        const type = event.target.id; 
+    
+        const postDetails = document.querySelector('#post-detailed')
+        const postId = postDetails.getAttribute('data-post-id');
+        const posterId = postDetails.getAttribute('data-poster-id');
+        const currentUser = await getCurrentUser()
+    
+        let commentInput = type === 'comment-btn-lg' 
+            ? document.querySelector('#comment-textarea-lg')
+            : document.querySelector('#comment-textarea-sm')
+    
+        const commentInputValue = commentInput.value.trim(); 
+        
+        if (!commentInputValue) {
+            return; 
+        }
+    
+        const { commentId } = await createComment(currentUser, commentInputValue, postId)
+    
+        const { commentContent, commenterHandle, commenterDisplayname } = await getCommentData(commentId, postId); 
+    
+        displayComments(commenterHandle, commenterDisplayname, commentContent, commentId)
+    
+        commentInput.value = ''
+    } catch (error) {
+        console.error('Erorr adding a comment', error)
     }
-
-    const { commentId } = await createComment(currentUser, commentInputValue, postId)
-
-    // console.log(await getCommentData(commentId, postId)); 
-
-    const { commentContent, commenterHandle, commenterDisplayname } = await getCommentData(commentId, postId); 
-
-    displayComments(commenterHandle, commenterDisplayname, commentContent, commentId)
-
-    commentInput.value = ''
 }
 
 async function handleDeletePostDetail() {
-    // Delete the post
-    // console.log('delete'); 
     try {
         const postDetails = document.querySelector('#post-detailed');
         const postId = postDetails.getAttribute('data-post-id');
@@ -803,7 +793,6 @@ async function handleShowUserProfile(event) {
             
             
             for (const userPost of allUserPosts) {
-                console.log('yay', userPost)
                 const { postContent, postId, likes, creatorId, comments, dateUpdated } = userPost;
 
                 displayPosts(currentUser, userhandle, displayname, postContent, postId, creatorId, 'profile', comments, likes, dateUpdated)
@@ -841,12 +830,10 @@ userPostsContainerDiv.addEventListener('click', handleAddLike);
 detailedPostContainer.addEventListener('click', handleAddLike)
 
 postContainerDiv.addEventListener('click', handleShowUserProfile);
-// LIKE BUTTON ON THE DETAILED USER DIV 
 
 
 postContainerDiv.addEventListener('click', handleDeletePost); 
 userPostsContainerDiv.addEventListener('click', handleDeletePost); 
-// DELETE BTN ON THE DETAILED UESR DIV 
 
 postContainerDiv.addEventListener('click', handleShowPostDetails);
 userPostsContainerDiv.addEventListener('click', handleShowPostDetails);

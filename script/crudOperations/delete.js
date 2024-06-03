@@ -14,6 +14,6 @@ export async function deletePost(postId, userId) {
             await remove(postRef); 
         }
     } catch (error) {
-        console.error(error)
+        console.error('Error deleting post:', error)
     }
 }

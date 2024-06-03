@@ -112,21 +112,25 @@ export function convertBack (value, oldItem, targetItem, parentItem, type) {
 }
 
 export async function unsavedProfileFormRevert() {
-    const userHandleInput = document.querySelector('#user-handle');
-    const displayNameInput = document.querySelector('#display-name');
-    const bioInput = document.querySelector('#bio');
-    const usernameWarning = document.querySelector('#username-warning-profile'); 
-    const saveProfileBtn = document.querySelector('#save-profile');
-    const editProfileBtn = document.querySelector('#edit-profile');
+    try {
+        const userHandleInput = document.querySelector('#user-handle');
+        const displayNameInput = document.querySelector('#display-name');
+        const bioInput = document.querySelector('#bio');
+        const usernameWarning = document.querySelector('#username-warning-profile'); 
+        const saveProfileBtn = document.querySelector('#save-profile');
+        const editProfileBtn = document.querySelector('#edit-profile');
+        
     
-
-    const { userhandle, displayname, bio } = await getCurrentUserData(); 
-
-    hideEl(usernameWarning); 
-    hideEl(saveProfileBtn); 
-    showEl(editProfileBtn)
-
-    convertBack(userhandle, userHandleInput, 'h2', userHandleInput.parentNode, 'user handle')
-    convertBack(displayname, displayNameInput, 'p', displayNameInput.parentNode, 'display name')
-    convertBack(bio, bioInput, 'p', bioInput.parentNode, 'bio')
+        const { userhandle, displayname, bio } = await getCurrentUserData(); 
+    
+        hideEl(usernameWarning); 
+        hideEl(saveProfileBtn); 
+        showEl(editProfileBtn)
+    
+        convertBack(userhandle, userHandleInput, 'h2', userHandleInput.parentNode, 'user handle')
+        convertBack(displayname, displayNameInput, 'p', displayNameInput.parentNode, 'display name')
+        convertBack(bio, bioInput, 'p', bioInput.parentNode, 'bio')
+    } catch (error) {
+        console.error('Error reverting Profile Form (unsaved):', error)
+    }
 }

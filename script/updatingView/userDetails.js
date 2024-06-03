@@ -18,13 +18,10 @@ export async function getCurrentUserData(pageNum, type) {
             displayname,
             bio, 
             allUserPosts,
-            // userPosts: posts, 
             userPostArr,
             maxPagesNum, 
         }
 
-        // console.log('userPostArr:', userPostArr)
-    
         return returnObj
     } catch (error) {
         console.error('Problem getting userData:', error)
@@ -48,12 +45,10 @@ export async function getOtherUserData(otherUserId, pageNum, type) {
             displayname,
             bio, 
             allUserPosts,
-            // userPosts: posts, 
             userPostArr,
             maxPagesNum, 
         }
 
-        // console.log('userPostArr:', userPostArr)
     
         return returnObj
     } catch (error) {

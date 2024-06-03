@@ -10,7 +10,7 @@ export async function updateUserInfo(userId, userhandle, displayname, bio) {
             bio: bio, 
         });
     } catch (error) {
-        console.error(error); 
+        console.error('Error updating user info', error); 
     }
 }
 
@@ -20,7 +20,7 @@ export async function addLikes(postId, userId) {
     try {
         await update(postRef, { likes: {[userId]: true}}) 
     } catch (error) {
-        console.error(error)
+        console.error('Error adding likes to psot', error)
     }
 }
 
@@ -37,8 +37,6 @@ export async function removeLikes (postId, userId) {
             await set(postRef, likesObj);
 
         }
-
-
     } catch (error) {
         console.error('error removing like:', error)
     }

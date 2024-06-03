@@ -22,5 +22,3 @@ export async function getAllPostInfo(pageNum, type) {
         
     }
 }
-
-export async function updateHomeDiv() {}

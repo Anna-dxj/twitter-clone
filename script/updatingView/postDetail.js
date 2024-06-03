@@ -25,20 +25,18 @@ export async function getPostData(postId, posterId) {
 }
 
 export async function getCommentData(commentId, postId) {
-    // console.log(commentId)
-    // console.log(await getOneComment(commentId, postId))
-    // return
-    const { commenterId, commentContent } = await getOneComment(commentId, postId); 
-    const { userhandle, displayname } = await getOneUser(commenterId); 
-
-    const returnObj = { 
-        commentContent, 
-        commenterHandle: userhandle, 
-        commenterDisplayname: displayname
+    try {
+        const { commenterId, commentContent } = await getOneComment(commentId, postId); 
+        const { userhandle, displayname } = await getOneUser(commenterId); 
+    
+        const returnObj = { 
+            commentContent, 
+            commenterHandle: userhandle, 
+            commenterDisplayname: displayname
+        }
+    
+        return returnObj
+    } catch (error) {
+        console.error('Error getting comment data', error)        
     }
-
-    return returnObj
 }
-
-// Back button
-// If any other view is shown
