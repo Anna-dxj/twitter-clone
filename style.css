@@ -516,7 +516,6 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
     .post {
         box-shadow: 9px 18px 55px -12px #000000;
         margin: 1rem;
-        padding: 0.5rem;
     }
 
     .post-body {
