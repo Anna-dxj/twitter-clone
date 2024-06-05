@@ -18,7 +18,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
 
 
        if (viewType === 'feed') {
-           newPost.className = 'col-sm-12 offset-md-1 col-md-10'
+           newPost.className = 'col-11 col-md-10'
        }
 
        newPost.classList.add('post')
@@ -59,7 +59,7 @@ export function displayPosts(currentUser, userHandle, displayName, content, post
                 <p>${content}</p>
             </div>
             <div class="d-flex btn-divs justify-content-between align-items-center">
-                <div class="px-2 m-2">
+                <div class="px-md-2 m-md-2">
                     <p class="date">${date}</p>
                 </div>
                 <div class="d-flex btn-divs justify-content-end">
