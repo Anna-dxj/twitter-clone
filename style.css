@@ -1,7 +1,9 @@
 :root {
     --backround-color: #41413d;
     /* --darker-background-color: #282927; */
-    --darker-background-color: rgb(81, 83, 79);
+    --darker-background-color: #51534f;
+    --darker-background-highlight: #51534f73;
+    --darker-background-active: #8d8f8b; 
     --card-areas: #FAFAFA;
     --primary-text:#dddddd;
     --secondary-text: #8a8a8a;
@@ -12,6 +14,8 @@
     --dark-purple-active: #261e38;
     --dark-purple: #716099;
     --warning: #dc3545;
+    --warning-light: #dc3546a4;
+    --button-hover: #c7c7c765; 
 
     margin: 0px; 
     padding: 0px;
@@ -22,6 +26,7 @@
 body {
     min-height: 100vh;
     background-color: var(--backround-color);
+    overflow-x: hidden; 
 }
 
 h1, h2, h3, h4 {
@@ -66,8 +71,9 @@ p {
     background-color: var(--pink);
 }
 
-.pink-btn:hover {
-    background-color: var(--pink-highlight)
+.pink-btn:hover, .custom-form-btn:hover {
+    background-color: var(--pink-highlight); 
+    cursor: pointer;
 
 }
 
@@ -134,7 +140,7 @@ p {
     padding-bottom: 5rem; 
 }
 
-nav {
+.app-nav {
     background-color: var(--card-areas); 
     padding: 0; 
     position: fixed; 
@@ -142,7 +148,7 @@ nav {
     width: 100%;
 }
 
-nav ul {
+.app-nav ul {
     width: 100%; 
     margin: 0; 
     padding: 0;
@@ -181,6 +187,7 @@ nav ul {
 .user-handle {
     margin: 0.3rem 0; 
     padding: 0; 
+    transition: 0.3s all; 
 }
 
 .display-name {
@@ -198,14 +205,79 @@ nav ul {
     margin-right: 0.5rem; 
 }
 
-.likes-icon, .comments-icon {
+.likes-icon, .comments-icon, .delete-icon {
     height: 2rem; 
     width: auto; 
+}
+
+.likes-btn:hover, .comments-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.delete-btn:hover {
+    background-color: var(--warning-light); 
 }
 
 .likes-num, .comments-num {
     margin: 0 0.4rem; 
     color: var(--secondary-text); 
+}
+
+.date {
+    color: var(--secondary-text); 
+    font-style: italic;
+}
+
+.feed-page-navigator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-nav {
+    background-color: var(--darker-background-color);
+    color: var(--primary-text); 
+    font-weight: 600;  
+    margin: 0.3rem; 
+    padding: 0.7rem;
+    border-radius: 0.3rem;  
+    transition: all 0.4s;
+    font-family: 'Inter', sans-serif; 
+}
+
+.prev-page-btn:hover, .next-page-btn:hover {
+    cursor: pointer;
+    background-color: var(--darker-background-highlight);
+}
+
+.prev-page-btn:active, .next-page-btn:active {
+    background-color: var(--darker-background-active)
+}
+
+.inactive {
+    background-color: var(--darker-background-active);
+}
+
+.inactive:hover {
+    cursor: default
+}
+
+.update-user-handle {
+    font-family: 'Comfortaa', sans-serif; 
+    font-weight: 600;
+    font-size: 24px; 
+    margin-top: 0.3rem; 
+}
+
+.update-display-name{
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: 600; 
+    margin-top: 0.3rem; 
+}
+.update-bio{
+    height: 30rem; 
+    width: 90%; 
+    margin-bottom: 1rem; 
 }
 
 #search-form {
@@ -229,7 +301,11 @@ nav ul {
 
 .custom-form-btn {
     background-color: var(--pink); 
-    padding: 0.6rem; 
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; 
+    margin-left: -2rem; 
+    border: none; 
+    padding: 0.45rem; 
     border-radius: 0 0.5rem 0.5rem 0;
 }
 
@@ -267,6 +343,24 @@ nav ul {
 
 .profile-result:active h3 {
     color: var(--dark-purple-active);
+}
+
+.post:hover .user-handle {
+    color: var(--dark-purple); 
+    /* color: blue */
+}
+
+.user-info-div:hover .user-handle {
+    color: var(--dark-purple-highlight)
+    /* color: red;  */
+}
+
+.user-info-div:active .user-handle {
+    color: var(--dark-purple-active); 
+}
+
+.user-info-div:hover {
+    cursor: pointer; 
 }
 
 #back-btn-div {
@@ -341,6 +435,12 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
     justify-content: center;
 }
 
+.my-page-navigator {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem; 
+}
+
 .new-post-form-div {
     width: 100%; 
 }
@@ -389,10 +489,10 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
 @media screen and (min-width: 992px) {
 
     #auth-div {
-        padding-left: 5rem; 
+        padding-left: 4rem; 
     }
 
-    nav {
+    .app-nav {
         padding: 0; 
         position: fixed; 
         top: 0; 
@@ -401,7 +501,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
         width: auto; 
     } 
 
-    nav ul {
+    .app-nav ul {
         padding-top: 5rem; 
         display: flex; 
         flex-direction: column; 
@@ -415,6 +515,7 @@ label[for="update-username"], label[for="update-display-name"], label[for="updat
 
     .post {
         box-shadow: 9px 18px 55px -12px #000000;
+        margin: 1rem;
     }
 
     .post-body {
